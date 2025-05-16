@@ -60,7 +60,5 @@ for (var i=0; i < scriptTags.length; i++) {
     let tealCode = scriptTags[i].innerHTML;
     try {
       fengari.load(loaderCode.replace("%input%", JSON.stringify(tealCode)))();
-    } catch (err) {
-      window.alert(err);
-    }
+    } catch (err) {}
 }
