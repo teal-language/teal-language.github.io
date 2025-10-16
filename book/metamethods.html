@@ -213,7 +213,7 @@ print(r("!!!", 1000)) -- prints 12000!!!
 print((r + s).x)      -- prints 32
 </code></pre>
 <p>Note that we explicitly declare variables as <code>Rec</code> when initializing the
-declaration with <code>setmetatable</code>. The Teal standard library definiton of
+declaration with <code>setmetatable</code>. The Teal standard library definition of
 <code>setmetatable</code> is <code>function&lt;T&gt;(T, metatable&lt;T&gt;): T</code>, so declaring the correct
 record type in the declaration assigns the record type to the type variable
 <code>T</code> in the return value of the function call, causing it to propagate to the

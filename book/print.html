@@ -597,7 +597,7 @@ print(x.status_code)
 both as a Lua table and as a type. In object-oriented terms, the record
 itself works as class whose fields work as class attributes,
 while other tables declared with the record type are objects whose
-fields are object atributes. For example:</p>
+fields are object attributes. For example:</p>
 <pre><code class="language-lua">local record MyConcreteRecord
    a: string
    x: integer
@@ -786,7 +786,7 @@ You can of course promote an arbitrary string to an enum with a cast.</p>
 <p>Functions in Teal should work like you expect, and we have already showed
 various examples.</p>
 <p>You can declare nominal function types, like we do for records, to avoid
-longwinded type declarations, especially when declaring functions that take
+long-winded type declarations, especially when declaring functions that take
 callbacks. This is done with using <code>function</code> types, and they can be generic as
 well:</p>
 <pre><code class="language-lua">local type Comparator = function&lt;T&gt;(T, T): boolean
@@ -1138,7 +1138,7 @@ print(r("!!!", 1000)) -- prints 12000!!!
 print((r + s).x)      -- prints 32
 </code></pre>
 <p>Note that we explicitly declare variables as <code>Rec</code> when initializing the
-declaration with <code>setmetatable</code>. The Teal standard library definiton of
+declaration with <code>setmetatable</code>. The Teal standard library definition of
 <code>setmetatable</code> is <code>function&lt;T&gt;(T, metatable&lt;T&gt;): T</code>, so declaring the correct
 record type in the declaration assigns the record type to the type variable
 <code>T</code> in the return value of the function call, causing it to propagate to the
@@ -1226,7 +1226,7 @@ local record MyRecord is MyInterface
 end
 </code></pre>
 <p>At this time, macroexp declarations within records do not allow inference,
-so the <code>function</code> type needs to be explicitly declared when implementinga
+so the <code>function</code> type needs to be explicitly declared when implementing a
 a field or metamethod as a <code>macroexp</code>. This requirement may be dropped in
 the future.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="behavior-rules"><a class="header" href="#behavior-rules">Behavior rules</a></h1>
