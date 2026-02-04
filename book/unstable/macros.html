@@ -1,0 +1,723 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Macros - The Teal Programming Language</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-9db149c2.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-fee1edea.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Teal Programming Language</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="macros"><a class="header" href="#macros">Macros</a></h1>
+<p>Teal macros are compile-time code generators. They let you write Lua code that
+constructs and returns AST blocks, which are then spliced into your program
+before type checking and code generation. Macros are a separate feature from
+macro expressions (see <a href="./macroexp.html">Macro expressions</a>).</p>
+<p>Macros are <strong>local</strong> and <strong>compile-time only</strong>: their declarations are removed
+after expansion and produce no Lua code at runtime.</p>
+<h2 id="declaring-a-macro"><a class="header" href="#declaring-a-macro">Declaring a macro</a></h2>
+<p>A macro is declared with <code>local macro</code>, a name ending in <code>!</code>, and a function
+body:</p>
+<pre><code class="language-lua">local macro inc!(x: Expression)
+   return `$x + 1`
+end
+
+local y = inc!(2)
+</code></pre>
+<p>Here, <code>inc!</code> receives an expression AST and returns a new expression AST built
+from a quote.</p>
+<h2 id="invoking-a-macro"><a class="header" href="#invoking-a-macro">Invoking a macro</a></h2>
+<p>A macro call uses the <code>!</code> postfix operator and accepts the same argument forms
+as function calls:</p>
+<pre><code class="language-lua">foo!(a, b)
+foo!"string"
+foo!{ key = "value" }
+</code></pre>
+<p>Macros can appear in expression or statement positions, as long as the macro
+returns a compatible kind of block.</p>
+<h2 id="macro-arguments"><a class="header" href="#macro-arguments">Macro arguments</a></h2>
+<p>Macro parameters must be annotated as one of:</p>
+<ul>
+<li><code>Expression</code></li>
+<li><code>Statement</code></li>
+<li><code>...: Expression</code> (vararg)</li>
+<li><code>...: Statement</code> (vararg)</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-lua">local macro wrap!(s: Statement, e: Expression)
+   local out = block("statements")
+   table.insert(out, s)
+   table.insert(out, `print($e)`)
+   return out
+end
+
+wrap!(do
+   local x = 1
+end, "ok")
+</code></pre>
+<p><code>Statement</code> arguments are passed as a <code>statements</code> block, which can contain one
+or more statements.</p>
+<p>Macro arguments are <strong>AST blocks</strong>, not runtime values. Macros transform the
+syntax tree and return new blocks to be spliced into the program.</p>
+<h2 id="quoting-and-splicing"><a class="header" href="#quoting-and-splicing">Quoting and splicing</a></h2>
+<p>Macros usually construct AST blocks by quoting Teal syntax:</p>
+<ul>
+<li><strong>Single backticks</strong> quote an expression: <code>`a + 1`</code></li>
+<li><strong>Triple backticks</strong> quote statements: use three backticks (<code>```</code>)</li>
+</ul>
+<p>Inside a macro quote, <code>$name</code> splices the macro argument named <code>name</code>:</p>
+<pre><code class="language-lua">local macro twice!(x: Expression)
+   return `$x + $x`
+end
+</code></pre>
+<p>For statement quotes, you can splice a <code>Statement</code> argument by putting <code>$name</code>
+on its own line (optional semicolon):</p>
+<pre><code class="language-lua">local macro insert!(s: Statement)
+   return ```
+      $s
+      print("after")
+   ```
+end
+</code></pre>
+<h2 id="building-ast-blocks-directly"><a class="header" href="#building-ast-blocks-directly">Building AST blocks directly</a></h2>
+<p>The macro sandbox provides helpers for manual AST construction:</p>
+<ul>
+<li><code>block(kind)</code> creates a block of a given kind</li>
+<li><code>BLOCK_INDEXES</code> gives numeric indices for block fields</li>
+<li><code>clone(b)</code> makes a deep copy of a block</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-lua">local macro make_local!(name: Expression, value: Expression)
+   local BI = BLOCK_INDEXES
+   local decl = block("local_declaration")
+   decl[BI.LOCAL_DECLARATION.VARS] = block("variable_list")
+   decl[BI.LOCAL_DECLARATION.VARS][BI.VARIABLE_LIST.FIRST] = name
+   decl[BI.LOCAL_DECLARATION.EXPS] = block("expression_list")
+   decl[BI.LOCAL_DECLARATION.EXPS][BI.EXPRESSION_LIST.FIRST] = value
+   return decl
+end
+</code></pre>
+<p>which is the equivalent to</p>
+<pre><code class="language-lua">local macro make_local!(name: Expression, value: Expression)
+   local decl = ```
+      local $name = $value
+</code></pre>
+<p>return decl
+end</p>
+<pre><code>
+## Putting it all together, writing a pipe! macro
+
+Using all these tools given to us by the macro system, we can write a simple `pipe!` macro that takes in an expression like
+
+```lua
+x | f | g(y)
+</code></pre>
+<p>and produces</p>
+<pre><code class="language-lua">g(f(x), y)
+</code></pre>
+<p>First, we declare the macro with the appropriate argument type:</p>
+<pre><code class="language-lua">local macro pipe!(pipe_expr: Expression)
+
+end
+</code></pre>
+<p>now we want to make sure we are taking in an <code>op_bor</code> (<code>|</code>). We can do this using <code>expect</code></p>
+<pre><code class="language-lua">local macro pipe!(pipe_expr: Expression)
+   expect(pipe_expr, "op_bor")
+end
+</code></pre>
+<p>Now we want to be extracting all of the “calls” that are being piped together. We do this by traversing the <code>op_bor</code> nodes until we reach the last expression.</p>
+<pre><code class="language-lua">local macro pipe!(pipe_expr: Expression)
+   expect(pipe_expr, "op_bor")
+   local BI = BLOCK_INDEXES
+
+   local calls = {}
+   local function append_call(expr)
+      if expr.kind == "op_bor" then
+         -- see below for the indexes
+         -- because op_bor is a binary operator,
+         -- we are going to use E1 and E2 to get the left and right expressions
+         append_call(expr[BI.OP.E1])
+         append_call(expr[BI.OP.E2])
+      else
+         -- this will be a block of a variable (f) or a func call (g(y))
+         table.insert(calls, expr)
+      end
+      return nil
+   end
+   append_call(pipe_expr)
+end
+</code></pre>
+<p>Now that we have the calls in order, we need to build the nested function calls. For our macro, we also want to make it so any variables on their own (for example, just <code>f</code> in <code>x | f</code>) are treated as function calls with no arguments (<code>f()</code>).</p>
+<pre><code class="language-lua">local macro pipe!(pipe_expr: Expression)
+   expect(pipe_expr, "op_bor")
+   local BI = BLOCK_INDEXES
+
+   local calls = {}
+   local function append_call(expr)
+      if expr.kind == "op_bor" then
+         -- see below for the indexes
+         -- because op_bor is a binary operator,
+         -- we are going to use E1 and E2 to get the left and right expressions
+         append_call(expr[BI.OP.E1])
+         append_call(expr[BI.OP.E2])
+      else
+         -- this will be a block of a variable (f) or a func call (g(y))
+         table.insert(calls, expr)
+      end
+      return nil
+   end
+   append_call(pipe_expr)
+
+   -- this is what we are gonna keep updating
+   local invocation = calls[1]
+   for i = 2, #calls do
+      local call = calls[i]
+      if call.kind ~= "op_funcall" then
+         -- this is the case where we have a variable (f)
+         -- we just need to give it an expression list to store its parameters
+         call = `($call)()`
+      end
+
+      -- this is the parametres of the call itself
+      local exprlist = call[BI.OP.E2]
+      --we need a clone so we can mutate safely
+      local newexprlist = clone(exprlist)
+      -- adding in the previous invocation as the first parameter
+      -- so `x | f` becomes `f(x)` and `x | f | g(y)` becomes `g(f(x), y)`
+      table.insert(newexprlist, 1, invocation)
+      invocation = clone(call)
+      -- assigning the new parameter list back to our new call
+      invocation[BI.OP.E2] = newexprlist
+   end
+
+   -- good job! we did it!
+   return invocation
+end
+</code></pre>
+<p>And we can test it out:</p>
+<pre><code class="language-lua">local function add(x: integer, y: integer): integer
+    return x + y
+end
+
+local function double(x: integer): integer
+    return x * 2
+end
+
+local z = pipe!(3 | add(4) | double)
+
+print(z) -- prints 14
+</code></pre>
+<h2 id="by-design-limitations"><a class="header" href="#by-design-limitations">By-design limitations</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Detail</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td>Local only</td><td>Macros must be declared with <code>local macro</code> and are scoped to a single file. They cannot be exported or imported.</td></tr>
+<tr><td>Compile-time only</td><td>Macros run before type checking, and their declarations produce no runtime code.</td></tr>
+<tr><td>Restricted environment</td><td>Macro bodies run in a sandbox with a limited standard library (no <code>require</code>, file I/O, or OS access beyond basic timing functions).</td></tr>
+<tr><td>Argument types are fixed</td><td>Every parameter must be annotated as <code>Statement</code> or <code>Expression</code> (varargs allowed). Other annotations are errors.</td></tr>
+<tr><td>Quotes are only valid inside macros</td><td>Backtick quotes and <code>$name</code> splices are rejected outside <code>local macro</code> bodies.</td></tr>
+<tr><td>No nested macro invocations</td><td>You cannot use <code>other!()</code> inside a macro body to expand another macro; build the block directly or with quotes.</td></tr>
+<tr><td>Statement args with top-level commas need a wrapper</td><td>When passing a statement argument like <code>local a, b = 1, 2</code>, wrap it in <code>do ... end</code> to avoid parsing ambiguity.</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="block-kinds"><a class="header" href="#block-kinds">Block kinds</a></h2>
+<p>All block kinds that can be returned from macros are listed below (from
+<code>teal/block.tl</code>):</p>
+<pre><code>nil
+string
+number
+integer
+boolean
+literal_table
+literal_table_item
+function
+expression_list
+if
+if_block
+while
+fornum
+forin
+goto
+label
+repeat
+do
+break
+return
+newtype
+argument
+type_identifier
+variable
+variable_list
+statements
+assignment
+argument_list
+local_function
+global_function
+local_type
+global_type
+record_function
+local_declaration
+global_declaration
+identifier
+cast
+...
+:
+;
+comment
+hashbang
+paren
+macroexp
+local_macroexp
+local_macro
+macro_quote
+macro_var
+macro_invocation
+interface
+pragma
+error_block
+userdata
+op_not
+op_len
+op_unm
+op_bnot
+op_or
+op_and
+op_is
+op_lt
+op_gt
+op_le
+op_ge
+op_ne
+op_eq
+op_bor
+op_bxor
+op_band
+op_shl
+op_shr
+op_concat
+op_add
+op_sub
+op_mul
+op_div
+op_idiv
+op_mod
+op_pow
+op_as
+op_funcall
+op_index
+op_dot
+op_colon
+typeargs
+typelist
+generic_type
+typedecl
+tuple_type
+nominal_type
+map_type
+array_type
+union_type
+argument_type
+interface_list
+record_body
+record_field
+question
+</code></pre>
+<h2 id="block_indexes-reference"><a class="header" href="#block_indexes-reference">BLOCK_INDEXES reference</a></h2>
+<p><code>BLOCK_INDEXES</code> maps block kinds to the numeric slots used by their children.
+This is the full table used by the macro API (from <code>teal/block.tl</code>):</p>
+<pre><code class="language-lua">TYPELIST.FIRST
+
+MACROEXP.RETS
+MACROEXP.ARGS
+MACROEXP.EXP
+
+GLOBAL_TYPE.VALUE
+GLOBAL_TYPE.VAR
+
+ASSIGNMENT.VARS
+ASSIGNMENT.EXPS
+
+MACRO_INVOCATION.ARGS
+MACRO_INVOCATION.MACRO
+
+UNION_TYPE.FIRST
+
+PAREN.EXP
+
+DO.BODY
+
+EXPRESSION_LIST.FIRST
+EXPRESSION_LIST.SECOND
+
+FUNCTION.BODY
+FUNCTION.RETS
+FUNCTION.TYPEARGS
+FUNCTION.ARGS
+
+LOCAL_MACROEXP.NAME
+LOCAL_MACROEXP.EXP
+
+TYPEARGS.FIRST
+
+LOCAL_TYPE.VALUE
+LOCAL_TYPE.VAR
+
+MACRO_VAR.NAME
+
+VARIABLE_LIST.FIRST
+
+GLOBAL_DECLARATION.EXPS
+GLOBAL_DECLARATION.VARS
+GLOBAL_DECLARATION.DECL
+
+RECORD.FIELDS
+RECORD.META_FIELDS
+RECORD.ARRAY_TYPE
+RECORD.WHERE_CLAUSE
+RECORD.INTERFACES
+
+RECORD_FUNCTION.ARGS
+RECORD_FUNCTION.BODY
+RECORD_FUNCTION.RETS
+RECORD_FUNCTION.TYPEARGS
+RECORD_FUNCTION.NAME
+RECORD_FUNCTION.OWNER
+
+INTERFACE_LIST.FIRST
+
+RETURN.EXPS
+
+MAP_TYPE.KEYS
+MAP_TYPE.VALUES
+
+OP.E1
+OP.E2
+
+ARRAY_TYPE.ELEMENT
+
+IF.BLOCKS
+
+TUPLE_TYPE.FIRST
+TUPLE_TYPE.SECOND
+
+NOMINAL_TYPE.NAME
+
+NEWTYPE.TYPEDECL
+
+GENERIC_TYPE.TYPEARGS
+GENERIC_TYPE.BASE
+
+TYPEARG.NAME
+TYPEARG.CONSTRAINT
+
+ARGUMENT_TYPE.NAME
+
+TYPEDECL.TYPE
+
+PRAGMA.KEY
+PRAGMA.VALUE
+
+WHILE.BODY
+WHILE.COND
+
+RECORD_FIELD.DEFAULT_VAL
+RECORD_FIELD.VAL
+RECORD_FIELD.TYPE
+RECORD_FIELD.NAME
+RECORD_FIELD.METHOD
+
+ARGUMENT_LIST.FIRST
+
+RECORD_BODY.META_FIELDS
+RECORD_BODY.FIELDS
+
+MACRO_QUOTE.BLOCK
+
+INTERFACE.FIELDS
+INTERFACE.INTERFACES
+INTERFACE.ARRAY_TYPE
+
+CAST.TYPE
+
+LITERAL_TABLE_ITEM.VALUE
+LITERAL_TABLE_ITEM.KEY
+LITERAL_TABLE_ITEM.TYPED_VALUE
+
+FUNCTION_TYPE.MACROEXP
+FUNCTION_TYPE.ARGS
+FUNCTION_TYPE.RETS
+
+LOCAL_DECLARATION.EXPS
+LOCAL_DECLARATION.VARS
+LOCAL_DECLARATION.DECL
+
+LOCAL_FUNCTION.RETS
+LOCAL_FUNCTION.BODY
+LOCAL_FUNCTION.TYPEARGS
+LOCAL_FUNCTION.NAME
+LOCAL_FUNCTION.ARGS
+
+FORIN.EXPS
+FORIN.VARS
+FORIN.BODY
+
+GOTO.LABEL
+
+GLOBAL_FUNCTION.RETS
+GLOBAL_FUNCTION.BODY
+GLOBAL_FUNCTION.TYPEARGS
+GLOBAL_FUNCTION.NAME
+GLOBAL_FUNCTION.ARGS
+
+VARIABLE.ANNOTATION
+
+REPEAT.BODY
+REPEAT.COND
+
+LABEL.NAME
+
+IF_BLOCK.BODY
+IF_BLOCK.COND
+
+LOCAL_MACRO.RETS
+LOCAL_MACRO.BODY
+LOCAL_MACRO.TYPEARGS
+LOCAL_MACRO.NAME
+LOCAL_MACRO.ARGS
+
+FORNUM.TO
+FORNUM.VAR
+FORNUM.FROM
+FORNUM.BODY
+FORNUM.STEP
+
+ARGUMENT.ANNOTATION
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="macroexp.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="behavior.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="macroexp.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="behavior.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
