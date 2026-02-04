@@ -13,21 +13,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -37,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex.js";
+            window.path_to_searchindex_js = "searchindex-9db149c2.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-fee1edea.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -54,7 +53,7 @@
             </div>
         </div>
     </div>
-    <div id="body-container">
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -83,12 +82,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -103,39 +102,39 @@
             }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -143,38 +142,38 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
                             </div>
                         </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
@@ -184,37 +183,41 @@ language.</p>
 Lua with type annotations, allowing you to specify arrays, maps and records,
 as well as interfaces, union types and generics.</p>
 <p>It aims to fill a niche similar to that of TypeScript in the JavaScript world,
-but adhering to Lua's spirit of minimalism, portability and embeddability.</p>
+but adhering to Lua’s spirit of minimalism, portability and embeddability.</p>
 <p>Is it implemented as a compiler, <a href="https://github.com/teal-language/tl">tl</a>,
 which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="this-projects-goals"><a class="header" href="#this-projects-goals">This project's goals</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="this-projects-goals-1"><a href="#this-projects-goals-1" class="header">This project's goals</a></h1>
+<h2 id="this-projects-goals"><a class="header" href="#this-projects-goals">This project’s goals</a></h2>
 <p>This project comes from the desire of a practical Lua dialect for
 programming-in-the-large. This is inspired by the experiences working on <a href="http://konghq.com">two
 large</a> <a href="http://luarocks.org">Lua applications</a>.</p>
 <p>The goal of the language is to be a dialect of Lua as much as TypeScript is a
 dialect of JavaScript. So yes, it is on the one hand a different language
 (there are new keywords such as <code>global</code> for example) but on the other hand it
-is pretty much recognizable as "Lua + typing".</p>
-<p>It aims to integrate to pretty much any Lua environment, since it's a
-"transpiler" that generates plain Lua and has no dependencies. The goal is to
+is pretty much recognizable as “Lua + typing”.</p>
+<p>It aims to integrate to pretty much any Lua environment, since it’s a
+“transpiler” that generates plain Lua and has no dependencies. The goal is to
 support at least both the latest PUC-Rio Lua and the latest LuaJIT as output
 targets.</p>
 <p>Minimalism (for some vague definition of minimalism!) is a design goal for
 both conceptual and practical reasons: conceptually to match the nature of
 Lua, and practical so that I can manage developing it. :)</p>
-<p>My very first concrete goal for Teal's development was to have the compiler
+<p>My very first concrete goal for Teal’s development was to have the compiler
 typecheck itself; that was achieved already: Teal is written in Teal.</p>
 <p>The next big goal is to have it typecheck the source code of a complete Lua
-application such as LuaRocks. That's something I wanted since the Typed Lua
-days back in 2015. That's a big goal and once I get there I'll dare call this
-"production ready", since it's used in a real-world program, though it should
+application such as LuaRocks. That’s something I wanted since the Typed Lua
+days back in 2015. That’s a big goal and once I get there I’ll dare call this
+“production ready”, since it’s used in a real-world program, though it should
 be usable even before we get there! The language has already proven useful
 when creating <a href="https://github.com/hishamhm/tabular">a new Lua module</a>.</p>
 <p>Teal is being created in hopes it will be useful for myself and hopefully
-others. I'm trying to keep it small and long-term manageable, and would love
+others. I’m trying to keep it small and long-term manageable, and would love
 to see a community of users and contributors grow around it over time!</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="why-types"><a class="header" href="#why-types">Why Types</a></h2>
-<p>If you're already convinced about the idea of type checking, you may skip this
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="why-types-1"><a href="#why-types-1" class="header">Why Types</a></h1>
+<h2 id="why-types"><a class="header" href="#why-types">Why Types</a></h2>
+<p>If you’re already convinced about the idea of type checking, you may skip this
 part. :)</p>
 <p>The data in your program has types: Lua is a high-level language, so each
 piece of data stored in the memory of the Lua virtual machine has a type:
@@ -227,9 +230,9 @@ boolean; you can call a function, but not a string; and so on.</p>
 <p>The variables of a Lua program, however, know nothing about types. You can put
 any value in any variable at any time, and if you make a mistake and match
 things incorrectly, the program will crash at runtime, or even worse: it will
-misbehave... silently.</p>
+misbehave… silently.</p>
 <p>The variables of Teal do know about types: each variable has an assigned type
-and will hold on to that type forever. This way, there's a whole class of
+and will hold on to that type forever. This way, there’s a whole class of
 mistakes that the Teal compiler is able to warn you about before the program
 even runs.</p>
 <p>Of course, it cannot catch every possible mistake in a program, but it should
@@ -237,21 +240,26 @@ help you with things like typos in table fields, missing arguments and so on.
 It will also make you be more explicit about what kind of data your program is
 dealing with: whenever that is not obvious enough, the compiler will ask you
 about it and have you document it via types. It will also constantly check
-that this "documentation" is not out of date. Coding with types is like pair
+that this “documentation” is not out of date. Coding with types is like pair
 programming with the machine.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="programming-with-types-in-teal"><a class="header" href="#programming-with-types-in-teal">Programming with Types in Teal</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="programming-with-types-in-teal"><a class="header" href="#programming-with-types-in-teal">Programming with Types in Teal</a></h1>
 <h2 id="welcome-to-teal-1"><a class="header" href="#welcome-to-teal-1">Welcome to Teal!</a></h2>
 <p>In this tutorial chapter, we will go through the basics so you can get up and running
 type checking your Lua code, through the use of Teal, a typed dialect of Lua.</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="installing-tl"><a class="header" href="#installing-tl">Installing tl</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="installing-tl-1"><a href="#installing-tl-1" class="header">Installing tl</a></h1>
+<h2 id="installing-tl"><a class="header" href="#installing-tl">Installing tl</a></h2>
 <p>To run tl, the Teal compiler, you need a Lua environment. Install Lua and
 LuaRocks (methods vary according to your operating system), and then run</p>
 <pre><code>luarocks install tl
 </code></pre>
 <p>If your environment is set up correctly, you should have a tl command
 available now!</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="your-first-teal-program"><a class="header" href="#your-first-teal-program">Your first Teal program</a></h2>
-<p>Let's start with a simple example, which declares a type-safe function. Let's
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="your-first-teal-program-1"><a href="#your-first-teal-program-1" class="header">Your first Teal program</a></h1>
+<h2 id="your-first-teal-program"><a class="header" href="#your-first-teal-program">Your first Teal program</a></h2>
+<p>Let’s start with a simple example, which declares a type-safe function. Let’s
 call this example <code>add.tl</code>:</p>
 <pre><code class="language-lua">local function add(a: number, b: number): number
    return a + b
@@ -269,7 +277,7 @@ print(s)
 <p>This will produce <code>add.lua</code>. But you can also run it directly with</p>
 <pre><code>tl run add.tl
 </code></pre>
-<p>We can also write modules in Teal which we can load from Lua. Let's create our
+<p>We can also write modules in Teal which we can load from Lua. Let’s create our
 first module:</p>
 <pre><code class="language-lua">local addsub = {}
 
@@ -299,9 +307,11 @@ $ lua
 <p>When loading and running the Teal module from Lua, there is no type checking!
 Type checking will only happen when you run <code>tl check</code> or load a program with
 <code>tl run</code>.</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="types-in-teal"><a class="header" href="#types-in-teal">Types in Teal</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="types-in-teal-1"><a href="#types-in-teal-1" class="header">Types in Teal</a></h1>
+<h2 id="types-in-teal"><a class="header" href="#types-in-teal">Types in Teal</a></h2>
 <p>Teal is a dialect of Lua. This tutorial will assume you already know Lua, so
-we'll focus on the things that Teal adds to Lua, and those are primarily type
+we’ll focus on the things that Teal adds to Lua, and those are primarily type
 declarations.</p>
 <p>Types in Teal are more specific than in Lua, because Lua tables are so general.
 These are the basic types in Teal:</p>
@@ -317,7 +327,7 @@ These are the basic types in Teal:</p>
 <p>Note: An <code>integer</code> is a sub-type of number; it is of undefined precision,
 deferring to the Lua VM.</p>
 <p>You can also declare more types using type constructors. This is the summary
-list with a few examples of each; we'll discuss them in more detail below:</p>
+list with a few examples of each; we’ll discuss them in more detail below:</p>
 <ul>
 <li>arrays - <code>{number}</code>, <code>{{number}}</code></li>
 <li>tuples - <code>{number, integer, string}</code></li>
@@ -330,7 +340,7 @@ list with a few examples of each; we'll discuss them in more detail below:</p>
 <li>records</li>
 <li>interfaces</li>
 </ul>
-<p>Here is an example declaration of each. Again, we'll go into more detail below,
+<p>Here is an example declaration of each. Again, we’ll go into more detail below,
 but this should give you an overview:</p>
 <pre><code class="language-lua">-- an enum: a set of accepted strings
 local enum State
@@ -374,7 +384,9 @@ local record File
    close: function(File): boolean, string
 end
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="arrays"><a class="header" href="#arrays">Arrays</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="arrays-1"><a href="#arrays-1" class="header">Arrays</a></h1>
+<h2 id="arrays"><a class="header" href="#arrays">Arrays</a></h2>
 <p>The simplest structured type in Teal is the array. An array is a Lua table where
 all keys are numbers and all values are of the same type. It is in fact a Lua
 sequence, and as such it has the same semantics as Lua sequences for things
@@ -401,11 +413,11 @@ end
 conflicting types, the tl compiler will tell you in its error message from
 which point in the program it originally got the idea that the empty table was
 an array of that incompatible type.</p>
-<p>Note also that we didn't need to declare the types of i and n in the above
+<p>Note also that we didn’t need to declare the types of i and n in the above
 example: the for statement can infer those from the return type of the
 iterator function produced by the ipairs call. Feeding ipairs with a {string}
 means that the iteration variables of the <code>ipairs</code> loop will be number and
-string. For an example of a custom user-written iterator, see the <a href="arrays.html#functions">Functions</a>
+string. For an example of a custom user-written iterator, see the <a href="#functions">Functions</a>
 section below.</p>
 <p>Note that all items of the array are expected to be of the same type. If you
 need to deal with heterogeneous arrays, you will have to use the cast operator
@@ -419,7 +431,9 @@ for i = 1, #sizes do
    sum = sum + sizes[i] -- will crash at runtime!
 end
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="tuples"><a class="header" href="#tuples">Tuples</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="tuples-1"><a href="#tuples-1" class="header">Tuples</a></h1>
+<h2 id="tuples"><a class="header" href="#tuples">Tuples</a></h2>
 <p>Another common usage of tables in Lua are tuples: tables containing an ordered set
 of elements of known types assigned to its integer keys.</p>
 <pre><code class="language-lua">-- Tuples of type {string, integer} containing names and ages
@@ -433,7 +447,7 @@ inferred, and trying to go out of range will produce an error.</p>
 local nonsense = p1[3] -- error! index 3 out of range for tuple {1: string, 2: integer}
 </code></pre>
 <p>When indexing with a <code>number</code> variable, Teal will do its best by making a
-<a href="tuples.html#union-types">union</a> of all the types in the tuple (following the
+<a href="#union-types">union</a> of all the types in the tuple (following the
 restrictions on unions detailed below)</p>
 <pre><code class="language-lua">local my_number = math.random(1, 2)
 local x = p1[my_number] -- =&gt; x is a string | number union
@@ -449,9 +463,9 @@ inferred).</p>
 <pre><code class="language-lua">local p4: {string, integer} = { "Delilah", 32, false } -- error! expected maximum length of 2, got 3
 </code></pre>
 <p>One thing to keep in mind when using tuples versus arrays is type inference,
-and when you should or shouldn't need it. A table will be inferred as an array
+and when you should or shouldn’t need it. A table will be inferred as an array
 if all of its elements are the same type, and as a tuple if any of its types
-aren't the same. So if you want an array of a union type instead of a tuple,
+aren’t the same. So if you want an array of a union type instead of a tuple,
 explicitly annotate it as such:</p>
 <pre><code class="language-lua">local array_of_union: {string | number} = {1, 2, "hello", "hi"}
 </code></pre>
@@ -459,7 +473,9 @@ explicitly annotate it as such:</p>
 as well:</p>
 <pre><code class="language-lua">local tuple_of_nums: {number, number} = {1, 2}
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="maps"><a class="header" href="#maps">Maps</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="maps-1"><a href="#maps-1" class="header">Maps</a></h1>
+<h2 id="maps"><a class="header" href="#maps">Maps</a></h2>
 <p>Another very common type of table is the map: a table where all keys of one
 given type, and all values are of another given type, which may or may not be
 the same as that of the keys. Maps are notated with curly brackets and a
@@ -471,12 +487,12 @@ local modes = { -- this is {boolean:number}
    [true] = 230,
 }
 </code></pre>
-<p>In case you're wondering, yes, an array is functionally equivalent to a map
+<p>In case you’re wondering, yes, an array is functionally equivalent to a map
 with keys of type number.</p>
 <p>When creating a map with string keys you may want to declare its type
-explicitly, so it doesn't get mistaken for a record. Records are freely usable
+explicitly, so it doesn’t get mistaken for a record. Records are freely usable
 as maps with string keys when all its fields are of the same type, so you
-wouldn't have to annotate the type to get a correct program, but the
+wouldn’t have to annotate the type to get a correct program, but the
 annotation will help the compiler produce better error messages if any errors
 occur involving this variable:</p>
 <pre><code class="language-lua">local is_vowel: {string:boolean} = {
@@ -488,15 +504,17 @@ occur involving this variable:</p>
 }
 </code></pre>
 <p>For now, if you have to deal with heterogeneous maps (that is, Lua tables with
-a mix of types in their keys or values), you'll have to use casts.</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="records"><a class="header" href="#records">Records</a></h2>
+a mix of types in their keys or values), you’ll have to use casts.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="records-1"><a href="#records-1" class="header">Records</a></h1>
+<h2 id="records"><a class="header" href="#records">Records</a></h2>
 <p>Records are the third major type of table supported in Teal. They represent
 another super common pattern in Lua code, so much that Lua includes special
 syntax for it (the dot and colon notations for indexing): tables with a set of
 string keys known in advance, each of them corresponding to a possibly
 different value type. Records (named as such in honor of the Algol/Pascal
 tradition from which Lua gets much of the feel of its syntax) can be used
-to represent objects, "structs", etc.</p>
+to represent objects, “structs”, etc.</p>
 <p>To declare a record variable, you need to create a record type first.
 The type describes the set of valid fields (keys of type string and their values
 of specific types) this record can take. You can declare types using <code>local type</code> and global types using <code>global type</code>.</p>
@@ -518,7 +536,7 @@ end
 initializer of variables declared with the record type:</p>
 <pre><code class="language-lua">local p: Point = { x = 100, y = 100 }
 </code></pre>
-<p>This, however, won't work:</p>
+<p>This, however, won’t work:</p>
 <pre><code class="language-lua">local record Vector
    x: number
    y: number
@@ -527,13 +545,13 @@ end
 local v1: Vector = { x = 100, y = 100 }
 local p2: Point = v1 -- Error!
 </code></pre>
-<p>Just because a table has fields with the same names and types, it doesn't mean
-that it is a Point. This is because records in Teal are <a href="aliasing.html">nominal
+<p>Just because a table has fields with the same names and types, it doesn’t mean
+that it is a Point. This is because records in Teal are <a href="#type-aliasing-rules-in-teal">nominal
 types</a>.</p>
 <p>You can always force a type, though, using the <code>as</code> operator:</p>
 <pre><code class="language-lua">local p2 = v1 as Point -- Teal goes "ok, I'll trust you..."
 </code></pre>
-<p>Note we didn't even have to declare the type of p2. The <code>as</code> expression resolves
+<p>Note we didn’t even have to declare the type of p2. The <code>as</code> expression resolves
 as a Point, so p2 picks up that type.</p>
 <p>You can also declare record functions after the record definition using the
 regular Lua colon or dot syntax, as long as you do it in the same scope block
@@ -550,7 +568,7 @@ function Point:move(dx: number, dy: number)
    self.y = self.y + dy
 end
 </code></pre>
-<p>When using the function, don't worry: if you get the colon or dot mixed up, tl
+<p>When using the function, don’t worry: if you get the colon or dot mixed up, tl
 will detect and tell you about it!</p>
 <p>If you want to define the function in a later scope (for example, if it is a
 callback to be defined by users of a module you are creating), you can declare
@@ -591,7 +609,9 @@ it across required modules as well:</p>
 local x: http.Response = http.get("http://example.com")
 print(x.status_code)
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="interfaces"><a class="header" href="#interfaces">Interfaces</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="interfaces-1"><a href="#interfaces-1" class="header">Interfaces</a></h1>
+<h2 id="interfaces"><a class="header" href="#interfaces">Interfaces</a></h2>
 <p>Interfaces are, in essence, abstract records.</p>
 <p>A concrete record is a type declared with <code>record</code>, which can be used
 both as a Lua table and as a type. In object-oriented terms, the record
@@ -645,7 +665,7 @@ r.a = "this works too because 'a' comes from MyAbstractInterface"
 is a valid type that can be used when declaring arguments in functions
 declared in interfaces and records. When a record is declared to be a subtype
 of an interface using <code>is</code>, any function arguments using <code>self</code> in the parent
-interface type will then resolve to the child record's type. The type signature
+interface type will then resolve to the child record’s type. The type signature
 of <code>another_func</code> makes it even more evident:</p>
 <pre><code class="language-lua">-- the following function complies to the type declared for `another_func`
 -- in MyAbstractInterface, because MyRecord is the `self` type in this context
@@ -655,7 +675,7 @@ end
 </code></pre>
 <p>Records and interfaces can inherit from multiple interfaces,
 as long as their component parts are compatible (that is, as long
-as the parent interfaces don't declare fields with the same name
+as the parent interfaces don’t declare fields with the same name
 but different types). Here is an example showing how incompatible
 fields need to be stated explicitly, but compatible fields can be
 inherited:</p>
@@ -709,11 +729,13 @@ these functions are resolved at runtime the same way as they would do in Lua,
 most likely using metatables to perform implementation inheritance. Teal
 does not implement a class/object model of its own, as it aims to be compatible
 with the multiple class/object models that exist in the Lua ecosystem.</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="generics"><a class="header" href="#generics">Generics</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="generics-1"><a href="#generics-1" class="header">Generics</a></h1>
+<h2 id="generics"><a class="header" href="#generics">Generics</a></h2>
 <p>Teal supports a simple form of generics that is useful enough for dealing
 collections and algorithms that operate over abstract data types.</p>
 <p>You can use type variables wherever a type is used, and you can declare them
-in both functions and records. Here's an example of a generic function:</p>
+in both functions and records. Here’s an example of a generic function:</p>
 <pre><code class="language-lua">local function keys&lt;K,V&gt;(xs: {K:V}):{K}
    local ks = {}
    for k, v in pairs(xs) do
@@ -757,9 +779,11 @@ and that will be the type of the return value, while still allowing you
 to use the specifics of the <code>Shape</code> interface within the implementation of
 <code>largest_shape</code>.</p>
 <p>Keep in mind though, the type variables are inferred upon their first match,
-so, especially when using constraints, that might demand <a href="type_variables.html">additional
+so, especially when using constraints, that might demand <a href="#type-variable-matching">additional
 care</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="enums"><a class="header" href="#enums">Enums</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="enums-1"><a href="#enums-1" class="header">Enums</a></h1>
+<h2 id="enums"><a class="header" href="#enums">Enums</a></h2>
 <p>Enums are a restricted type of string value, which represent a common practice
 in Lua code: using a limited set of string constants to describe an
 enumeration of possible values.</p>
@@ -782,7 +806,9 @@ end
 <p>Variables and arguments of this type will only accept values from the declared
 list. Enums are freely convertible to strings, but not the other way around.
 You can of course promote an arbitrary string to an enum with a cast.</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="functions-1"><a href="#functions-1" class="header">Functions</a></h1>
+<h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
 <p>Functions in Teal should work like you expect, and we have already showed
 various examples.</p>
 <p>You can declare nominal function types, like we do for records, to avoid
@@ -812,7 +838,7 @@ type. Again, this is an attribute of the argument position, not of the
 argument type itself.</p>
 <p>You can declare functions that generate iterators which can be used in
 <code>for</code> statements: the function needs to produce another function that iterates.
-This is an example <a href="https://www.lua.org/pil/7.1.html">taken the book "Programming in Lua"</a>:</p>
+This is an example <a href="https://www.lua.org/pil/7.1.html">taken the book “Programming in Lua”</a>:</p>
 <pre><code class="language-lua">local function allwords(): (function(): string)
    local line = io.read()
    local pos = 1
@@ -837,8 +863,59 @@ end
 </code></pre>
 <p>The only changes made to the code above were the addition of type signatures
 in both function declarations.</p>
-<p>Teal also supports <a href="macroexp.html">macro expressions</a>, which are a restricted
+<p>Teal also supports <a href="#macro-expressions">macro expressions</a>, which are a restricted
 form of function whose contents are expanded inline when generating Lua code.</p>
+<h3 id="function-declaration-syntax"><a class="header" href="#function-declaration-syntax">Function declaration syntax</a></h3>
+<p>Unlike Lua, bare <code>function</code> declarations are not global by default.
+Like other variables, Teal requires functions to be declared as <code>local</code> or <code>global</code>.</p>
+<pre><code class="language-lua">local function a_local_function()
+end
+
+global function a_global_function()
+end
+</code></pre>
+<p>One exception to the need of a <code>local</code> or <code>global</code> discriminator is when using
+the “record function syntax”, which is used to declare and assign a function
+element to a record, because the visibility is already defined by the record
+itself. You can use this syntax within the same scope where a
+record is declared:</p>
+<pre><code class="language-lua">local record MyRecord
+end
+
+function MyRecord.a_record_function()
+end
+</code></pre>
+<p>That supports both <code>.</code> and <code>:</code> notation, for an implied first argument <code>self</code>:</p>
+<pre><code class="language-lua">local record MyRecord
+   x: integer
+end
+
+function MyRecord:print_x()
+   print(self.x)
+end
+</code></pre>
+<p>Note that this syntax is only supported for records. It cannot be used with
+interfaces, because they are abstract. It also cannot be used with maps, emphasizing
+that records and maps are distinct types with distinct uses in Teal. Even though
+both are implemented as Lua tables, they are not interchangeable. If you have
+a map with function values, you can use the assignment syntax. As a matter of style,
+you may want to use the array index syntax, to emphasize to readers of your code
+that this is a map, as the declaration and assignment might be far apart in the
+source:</p>
+<pre><code class="language-lua">local funcs = {string : function(string):(integer)}
+
+funcs["count_a"] = function(input: string)
+   local n = 0
+   for _ in input:gmatch("a") do
+      n = n + 1
+   end
+   return n
+end
+</code></pre>
+<p>The example above also showcases using a <code>function</code> as a value – in this case,
+being assigned to a map. Like in Lua, you can pass functions as argument to
+functions, assign them to variables, maps, record fields, and so on, as long
+as their types as compatible.</p>
 <h3 id="variadic-functions"><a class="header" href="#variadic-functions">Variadic functions</a></h3>
 <p>Just like in Lua, some functions in Teal may receive a variable amount of
 arguments. Variadic functions can be declared by specifying <code>...</code> as the last
@@ -869,9 +946,11 @@ local a, b = table.unpack(s) as (number, string)
 print(a + 1)      -- `a` has type number
 print(b:upper())  -- `b` has type string
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="union-types"><a class="header" href="#union-types">Union types</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="union-types-1"><a href="#union-types-1" class="header">Union types</a></h1>
+<h2 id="union-types"><a class="header" href="#union-types">Union types</a></h2>
 <p>The language supports a basic form of union types. You can register a type that
-is a logical "or" of multiple types: it will accept values from multiple types,
+is a logical “or” of multiple types: it will accept values from multiple types,
 and you can discriminate them at runtime.</p>
 <p>You can declare union types like this:</p>
 <pre><code class="language-lua">local a: string | number | MyRecord
@@ -898,15 +977,19 @@ respective block.</p>
 
 local x: number = a is number and a + 1 or 0
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="the-type-any"><a class="header" href="#the-type-any">The type <code>any</code></a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="the-type-any-1"><a href="#the-type-any-1" class="header">The type "any"</a></h1>
+<h2 id="the-type-any"><a class="header" href="#the-type-any">The type <code>any</code></a></h2>
 <p>The type <code>any</code>, as it name implies, accepts any value, like a dynamically-typed
-Lua variable. However, since Teal doesn't know anything about this value, there
-isn't much you can do with it, besides comparing for equality and against nil,
+Lua variable. However, since Teal doesn’t know anything about this value, there
+isn’t much you can do with it, besides comparing for equality and against nil,
 and casting it into other values using the <code>as</code> operator.</p>
-<p>Some Lua libraries use complex dynamic types that can't be easily represented
+<p>Some Lua libraries use complex dynamic types that can’t be easily represented
 in Teal. In those cases, using <code>any</code> and making explicit casts is our last
 resort.</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="local-variables"><a class="header" href="#local-variables">Local variables</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="local-variables-1"><a href="#local-variables-1" class="header">Local variables</a></h1>
+<h2 id="local-variables"><a class="header" href="#local-variables">Local variables</a></h2>
 <p>Variables in Teal have types. So, when you declare a variable with the <code>local</code>
 keyword, you need to provide enough information so that the type can be determined.
 For this reason, it is not valid in Teal to declare a variable with no type at all
@@ -924,14 +1007,14 @@ variables at once, each variable should have its own type:</p>
 local r, g, b: number, number, number
 local ok: boolean
 </code></pre>
-<p>You don't need to write the type if you are initializing the variable on
+<p>You don’t need to write the type if you are initializing the variable on
 creation:</p>
 <pre><code class="language-lua">local s = "hello"
 local r, g, b = 0, 128, 128
 local ok = true
 </code></pre>
-<p>If you initialize a variable with nil and don't give it any type, this doesn't
-give any useful information to work with (you don't want your variable to
+<p>If you initialize a variable with nil and don’t give it any type, this doesn’t
+give any useful information to work with (you don’t want your variable to
 be always nil throughout the lifetime of your program, right?) so you will
 have to declare the type explicitly:</p>
 <pre><code>local n: number = nil
@@ -940,7 +1023,9 @@ have to declare the type explicitly:</p>
 information the Teal program needs. Every type in Teal accepts nil as a valid
 value, even if, like in Lua, attempting to use it with some operations would
 cause a runtime error, so be aware!</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="global-variables"><a class="header" href="#global-variables">Global variables</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="global-variables-1"><a href="#global-variables-1" class="header">Global variables</a></h1>
+<h2 id="global-variables"><a class="header" href="#global-variables">Global variables</a></h2>
 <p>Unlike in Lua, global variables in Teal need to be declared, because the
 compiler needs to know its type. It also allows the compiler to catch typos in
 variable names, because an invalid name will not be assumed to be some unknown
@@ -1011,12 +1096,14 @@ local p: Person = { residence = b }
 
 b.owner = p
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="variable-attributes"><a class="header" href="#variable-attributes">Variable attributes</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="variable-attributes-1"><a href="#variable-attributes-1" class="header">Variable attributes</a></h1>
+<h2 id="variable-attributes"><a class="header" href="#variable-attributes">Variable attributes</a></h2>
 <p>Teal supports variable annotations, with similar syntax and behavior to those
 from Lua 5.4. They are:</p>
 <h3 id="const-variables"><a class="header" href="#const-variables">Const variables</a></h3>
 <p>The <code>&lt;const&gt;</code> annotation works in Teal like it does in Lua 5.4 (it works at
-compile time, even if you're running a different version of Lua). Do note
+compile time, even if you’re running a different version of Lua). Do note
 however that this is annotation for variables, and not values: the contents of a
 value set to a const variable are not constant.</p>
 <pre><code class="language-lua">local xs &lt;const&gt; = {1,2,3}
@@ -1025,7 +1112,7 @@ xs = {} -- Error! can't replace the array in variable xs
 </code></pre>
 <h3 id="to-be-closed-variables"><a class="header" href="#to-be-closed-variables">To-be-closed variables</a></h3>
 <p>The <code>&lt;close&gt;</code> annotation from Lua 5.4 is only supported in Teal if your code
-generation target is Lua 5.4 (see the <a href="compiler_options.html">compiler options</a>
+generation target is Lua 5.4 (see the <a href="#compiler-options">compiler options</a>
 documentation for details on code generation targets). These work just
 <a href="https://www.lua.org/manual/5.4/manual.html#3.3.8">like they do in Lua 5.4</a>.</p>
 <pre><code class="language-lua">local contents = {}
@@ -1041,14 +1128,14 @@ assigned to a table value in which all possible keys need to be explicitly
 declared. Note that you can only use <code>&lt;total&gt;</code> when assigning to a literal
 table value, that is, when you are spelling out a table using a <code>{}</code> block.</p>
 <p>Of course, not all types allow you to enumerate all possible keys: there is an
-infinite number (well, not infinite because we're talking about computers, but
+infinite number (well, not infinite because we’re talking about computers, but
 an impractically large number!) of possible strings and numbers, so maps keyed
-by these types can't ever be total. Examples of valid key types for a total map
+by these types can’t ever be total. Examples of valid key types for a total map
 are booleans (for which there are only two possible values) and, most usefully,
 enums.</p>
 <p>Enums are the prime case for total variables: it is common to declare a number
 of cases in an enum and then to have a map of values that handle each of these
-cases. By declaring that map <code>&lt;total&gt;</code> you can be sure that you won't forget to
+cases. By declaring that map <code>&lt;total&gt;</code> you can be sure that you won’t forget to
 add handlers for the new cases as you add new entries to the enum.</p>
 <pre><code class="language-lua">local degrees &lt;total&gt;: {Direction:number} = {
    ["north"] = 0,
@@ -1097,10 +1184,12 @@ something like this works:</p>
 -- This declaration is fine: the map is still total, as we are
 -- explicitly mentioning which cases are left empty in it.
 </code></pre>
-<p><em>(Side note: the name "total" comes from the concept of a "total relation" in
-mathematics, which is a relation where, given a set of "keys" mapping to a set
-of "values", the keys fully cover the domain of their type).</em></p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="metamethods"><a class="header" href="#metamethods">Metamethods</a></h2>
+<p><em>(Side note: the name “total” comes from the concept of a “total relation” in
+mathematics, which is a relation where, given a set of “keys” mapping to a set
+of “values”, the keys fully cover the domain of their type).</em></p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="metamethods-1"><a href="#metamethods-1" class="header">Metamethods</a></h1>
+<h2 id="metamethods"><a class="header" href="#metamethods">Metamethods</a></h2>
 <p>Lua supports metamethods to provide some advanced features such as operator
 overloading. Like Lua tables, records support metamethods. To use metamethods
 in records you need to do two things:</p>
@@ -1146,7 +1235,8 @@ argument types, matching the correct table and metatable types.</p>
 <p>Operator metamethods for integer division <code>//</code> and bitwise operators are
 supported even when Teal runs on top of Lua versions that do not support them
 natively, such as Lua 5.1.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="macro-expressions"><a class="header" href="#macro-expressions">Macro expressions</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="macro-expressions"><a class="header" href="#macro-expressions">Macro expressions</a></h1>
 <p>Teal supports a restricted form of macro expansion via the <code>macroexp</code>
 construct, which declares a macro expression. This was added to the
 language as the support mechanism for implementing the <code>where</code> clauses
@@ -1229,9 +1319,501 @@ end
 so the <code>function</code> type needs to be explicitly declared when implementing a
 a field or metamethod as a <code>macroexp</code>. This requirement may be dropped in
 the future.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="behavior-rules"><a class="header" href="#behavior-rules">Behavior rules</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="macros"><a class="header" href="#macros">Macros</a></h1>
+<p>Teal macros are compile-time code generators. They let you write Lua code that
+constructs and returns AST blocks, which are then spliced into your program
+before type checking and code generation. Macros are a separate feature from
+macro expressions (see <a href="#macro-expressions">Macro expressions</a>).</p>
+<p>Macros are <strong>local</strong> and <strong>compile-time only</strong>: their declarations are removed
+after expansion and produce no Lua code at runtime.</p>
+<h2 id="declaring-a-macro"><a class="header" href="#declaring-a-macro">Declaring a macro</a></h2>
+<p>A macro is declared with <code>local macro</code>, a name ending in <code>!</code>, and a function
+body:</p>
+<pre><code class="language-lua">local macro inc!(x: Expression)
+   return `$x + 1`
+end
+
+local y = inc!(2)
+</code></pre>
+<p>Here, <code>inc!</code> receives an expression AST and returns a new expression AST built
+from a quote.</p>
+<h2 id="invoking-a-macro"><a class="header" href="#invoking-a-macro">Invoking a macro</a></h2>
+<p>A macro call uses the <code>!</code> postfix operator and accepts the same argument forms
+as function calls:</p>
+<pre><code class="language-lua">foo!(a, b)
+foo!"string"
+foo!{ key = "value" }
+</code></pre>
+<p>Macros can appear in expression or statement positions, as long as the macro
+returns a compatible kind of block.</p>
+<h2 id="macro-arguments"><a class="header" href="#macro-arguments">Macro arguments</a></h2>
+<p>Macro parameters must be annotated as one of:</p>
+<ul>
+<li><code>Expression</code></li>
+<li><code>Statement</code></li>
+<li><code>...: Expression</code> (vararg)</li>
+<li><code>...: Statement</code> (vararg)</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-lua">local macro wrap!(s: Statement, e: Expression)
+   local out = block("statements")
+   table.insert(out, s)
+   table.insert(out, `print($e)`)
+   return out
+end
+
+wrap!(do
+   local x = 1
+end, "ok")
+</code></pre>
+<p><code>Statement</code> arguments are passed as a <code>statements</code> block, which can contain one
+or more statements.</p>
+<p>Macro arguments are <strong>AST blocks</strong>, not runtime values. Macros transform the
+syntax tree and return new blocks to be spliced into the program.</p>
+<h2 id="quoting-and-splicing"><a class="header" href="#quoting-and-splicing">Quoting and splicing</a></h2>
+<p>Macros usually construct AST blocks by quoting Teal syntax:</p>
+<ul>
+<li><strong>Single backticks</strong> quote an expression: <code>`a + 1`</code></li>
+<li><strong>Triple backticks</strong> quote statements: use three backticks (<code>```</code>)</li>
+</ul>
+<p>Inside a macro quote, <code>$name</code> splices the macro argument named <code>name</code>:</p>
+<pre><code class="language-lua">local macro twice!(x: Expression)
+   return `$x + $x`
+end
+</code></pre>
+<p>For statement quotes, you can splice a <code>Statement</code> argument by putting <code>$name</code>
+on its own line (optional semicolon):</p>
+<pre><code class="language-lua">local macro insert!(s: Statement)
+   return ```
+      $s
+      print("after")
+   ```
+end
+</code></pre>
+<h2 id="building-ast-blocks-directly"><a class="header" href="#building-ast-blocks-directly">Building AST blocks directly</a></h2>
+<p>The macro sandbox provides helpers for manual AST construction:</p>
+<ul>
+<li><code>block(kind)</code> creates a block of a given kind</li>
+<li><code>BLOCK_INDEXES</code> gives numeric indices for block fields</li>
+<li><code>clone(b)</code> makes a deep copy of a block</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-lua">local macro make_local!(name: Expression, value: Expression)
+   local BI = BLOCK_INDEXES
+   local decl = block("local_declaration")
+   decl[BI.LOCAL_DECLARATION.VARS] = block("variable_list")
+   decl[BI.LOCAL_DECLARATION.VARS][BI.VARIABLE_LIST.FIRST] = name
+   decl[BI.LOCAL_DECLARATION.EXPS] = block("expression_list")
+   decl[BI.LOCAL_DECLARATION.EXPS][BI.EXPRESSION_LIST.FIRST] = value
+   return decl
+end
+</code></pre>
+<p>which is the equivalent to</p>
+<pre><code class="language-lua">local macro make_local!(name: Expression, value: Expression)
+   local decl = ```
+      local $name = $value
+</code></pre>
+<p>return decl
+end</p>
+<pre><code>
+## Putting it all together, writing a pipe! macro
+
+Using all these tools given to us by the macro system, we can write a simple `pipe!` macro that takes in an expression like
+
+```lua
+x | f | g(y)
+</code></pre>
+<p>and produces</p>
+<pre><code class="language-lua">g(f(x), y)
+</code></pre>
+<p>First, we declare the macro with the appropriate argument type:</p>
+<pre><code class="language-lua">local macro pipe!(pipe_expr: Expression)
+
+end
+</code></pre>
+<p>now we want to make sure we are taking in an <code>op_bor</code> (<code>|</code>). We can do this using <code>expect</code></p>
+<pre><code class="language-lua">local macro pipe!(pipe_expr: Expression)
+   expect(pipe_expr, "op_bor")
+end
+</code></pre>
+<p>Now we want to be extracting all of the “calls” that are being piped together. We do this by traversing the <code>op_bor</code> nodes until we reach the last expression.</p>
+<pre><code class="language-lua">local macro pipe!(pipe_expr: Expression)
+   expect(pipe_expr, "op_bor")
+   local BI = BLOCK_INDEXES
+
+   local calls = {}
+   local function append_call(expr)
+      if expr.kind == "op_bor" then
+         -- see below for the indexes
+         -- because op_bor is a binary operator,
+         -- we are going to use E1 and E2 to get the left and right expressions
+         append_call(expr[BI.OP.E1])
+         append_call(expr[BI.OP.E2])
+      else
+         -- this will be a block of a variable (f) or a func call (g(y))
+         table.insert(calls, expr)
+      end
+      return nil
+   end
+   append_call(pipe_expr)
+end
+</code></pre>
+<p>Now that we have the calls in order, we need to build the nested function calls. For our macro, we also want to make it so any variables on their own (for example, just <code>f</code> in <code>x | f</code>) are treated as function calls with no arguments (<code>f()</code>).</p>
+<pre><code class="language-lua">local macro pipe!(pipe_expr: Expression)
+   expect(pipe_expr, "op_bor")
+   local BI = BLOCK_INDEXES
+
+   local calls = {}
+   local function append_call(expr)
+      if expr.kind == "op_bor" then
+         -- see below for the indexes
+         -- because op_bor is a binary operator,
+         -- we are going to use E1 and E2 to get the left and right expressions
+         append_call(expr[BI.OP.E1])
+         append_call(expr[BI.OP.E2])
+      else
+         -- this will be a block of a variable (f) or a func call (g(y))
+         table.insert(calls, expr)
+      end
+      return nil
+   end
+   append_call(pipe_expr)
+
+   -- this is what we are gonna keep updating
+   local invocation = calls[1]
+   for i = 2, #calls do
+      local call = calls[i]
+      if call.kind ~= "op_funcall" then
+         -- this is the case where we have a variable (f)
+         -- we just need to give it an expression list to store its parameters
+         call = `($call)()`
+      end
+
+      -- this is the parametres of the call itself
+      local exprlist = call[BI.OP.E2]
+      --we need a clone so we can mutate safely
+      local newexprlist = clone(exprlist)
+      -- adding in the previous invocation as the first parameter
+      -- so `x | f` becomes `f(x)` and `x | f | g(y)` becomes `g(f(x), y)`
+      table.insert(newexprlist, 1, invocation)
+      invocation = clone(call)
+      -- assigning the new parameter list back to our new call
+      invocation[BI.OP.E2] = newexprlist
+   end
+
+   -- good job! we did it!
+   return invocation
+end
+</code></pre>
+<p>And we can test it out:</p>
+<pre><code class="language-lua">local function add(x: integer, y: integer): integer
+    return x + y
+end
+
+local function double(x: integer): integer
+    return x * 2
+end
+
+local z = pipe!(3 | add(4) | double)
+
+print(z) -- prints 14
+</code></pre>
+<h2 id="by-design-limitations"><a class="header" href="#by-design-limitations">By-design limitations</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Detail</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td>Local only</td><td>Macros must be declared with <code>local macro</code> and are scoped to a single file. They cannot be exported or imported.</td></tr>
+<tr><td>Compile-time only</td><td>Macros run before type checking, and their declarations produce no runtime code.</td></tr>
+<tr><td>Restricted environment</td><td>Macro bodies run in a sandbox with a limited standard library (no <code>require</code>, file I/O, or OS access beyond basic timing functions).</td></tr>
+<tr><td>Argument types are fixed</td><td>Every parameter must be annotated as <code>Statement</code> or <code>Expression</code> (varargs allowed). Other annotations are errors.</td></tr>
+<tr><td>Quotes are only valid inside macros</td><td>Backtick quotes and <code>$name</code> splices are rejected outside <code>local macro</code> bodies.</td></tr>
+<tr><td>No nested macro invocations</td><td>You cannot use <code>other!()</code> inside a macro body to expand another macro; build the block directly or with quotes.</td></tr>
+<tr><td>Statement args with top-level commas need a wrapper</td><td>When passing a statement argument like <code>local a, b = 1, 2</code>, wrap it in <code>do ... end</code> to avoid parsing ambiguity.</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="block-kinds"><a class="header" href="#block-kinds">Block kinds</a></h2>
+<p>All block kinds that can be returned from macros are listed below (from
+<code>teal/block.tl</code>):</p>
+<pre><code>nil
+string
+number
+integer
+boolean
+literal_table
+literal_table_item
+function
+expression_list
+if
+if_block
+while
+fornum
+forin
+goto
+label
+repeat
+do
+break
+return
+newtype
+argument
+type_identifier
+variable
+variable_list
+statements
+assignment
+argument_list
+local_function
+global_function
+local_type
+global_type
+record_function
+local_declaration
+global_declaration
+identifier
+cast
+...
+:
+;
+comment
+hashbang
+paren
+macroexp
+local_macroexp
+local_macro
+macro_quote
+macro_var
+macro_invocation
+interface
+pragma
+error_block
+userdata
+op_not
+op_len
+op_unm
+op_bnot
+op_or
+op_and
+op_is
+op_lt
+op_gt
+op_le
+op_ge
+op_ne
+op_eq
+op_bor
+op_bxor
+op_band
+op_shl
+op_shr
+op_concat
+op_add
+op_sub
+op_mul
+op_div
+op_idiv
+op_mod
+op_pow
+op_as
+op_funcall
+op_index
+op_dot
+op_colon
+typeargs
+typelist
+generic_type
+typedecl
+tuple_type
+nominal_type
+map_type
+array_type
+union_type
+argument_type
+interface_list
+record_body
+record_field
+question
+</code></pre>
+<h2 id="block_indexes-reference"><a class="header" href="#block_indexes-reference">BLOCK_INDEXES reference</a></h2>
+<p><code>BLOCK_INDEXES</code> maps block kinds to the numeric slots used by their children.
+This is the full table used by the macro API (from <code>teal/block.tl</code>):</p>
+<pre><code class="language-lua">TYPELIST.FIRST
+
+MACROEXP.RETS
+MACROEXP.ARGS
+MACROEXP.EXP
+
+GLOBAL_TYPE.VALUE
+GLOBAL_TYPE.VAR
+
+ASSIGNMENT.VARS
+ASSIGNMENT.EXPS
+
+MACRO_INVOCATION.ARGS
+MACRO_INVOCATION.MACRO
+
+UNION_TYPE.FIRST
+
+PAREN.EXP
+
+DO.BODY
+
+EXPRESSION_LIST.FIRST
+EXPRESSION_LIST.SECOND
+
+FUNCTION.BODY
+FUNCTION.RETS
+FUNCTION.TYPEARGS
+FUNCTION.ARGS
+
+LOCAL_MACROEXP.NAME
+LOCAL_MACROEXP.EXP
+
+TYPEARGS.FIRST
+
+LOCAL_TYPE.VALUE
+LOCAL_TYPE.VAR
+
+MACRO_VAR.NAME
+
+VARIABLE_LIST.FIRST
+
+GLOBAL_DECLARATION.EXPS
+GLOBAL_DECLARATION.VARS
+GLOBAL_DECLARATION.DECL
+
+RECORD.FIELDS
+RECORD.META_FIELDS
+RECORD.ARRAY_TYPE
+RECORD.WHERE_CLAUSE
+RECORD.INTERFACES
+
+RECORD_FUNCTION.ARGS
+RECORD_FUNCTION.BODY
+RECORD_FUNCTION.RETS
+RECORD_FUNCTION.TYPEARGS
+RECORD_FUNCTION.NAME
+RECORD_FUNCTION.OWNER
+
+INTERFACE_LIST.FIRST
+
+RETURN.EXPS
+
+MAP_TYPE.KEYS
+MAP_TYPE.VALUES
+
+OP.E1
+OP.E2
+
+ARRAY_TYPE.ELEMENT
+
+IF.BLOCKS
+
+TUPLE_TYPE.FIRST
+TUPLE_TYPE.SECOND
+
+NOMINAL_TYPE.NAME
+
+NEWTYPE.TYPEDECL
+
+GENERIC_TYPE.TYPEARGS
+GENERIC_TYPE.BASE
+
+TYPEARG.NAME
+TYPEARG.CONSTRAINT
+
+ARGUMENT_TYPE.NAME
+
+TYPEDECL.TYPE
+
+PRAGMA.KEY
+PRAGMA.VALUE
+
+WHILE.BODY
+WHILE.COND
+
+RECORD_FIELD.DEFAULT_VAL
+RECORD_FIELD.VAL
+RECORD_FIELD.TYPE
+RECORD_FIELD.NAME
+RECORD_FIELD.METHOD
+
+ARGUMENT_LIST.FIRST
+
+RECORD_BODY.META_FIELDS
+RECORD_BODY.FIELDS
+
+MACRO_QUOTE.BLOCK
+
+INTERFACE.FIELDS
+INTERFACE.INTERFACES
+INTERFACE.ARRAY_TYPE
+
+CAST.TYPE
+
+LITERAL_TABLE_ITEM.VALUE
+LITERAL_TABLE_ITEM.KEY
+LITERAL_TABLE_ITEM.TYPED_VALUE
+
+FUNCTION_TYPE.MACROEXP
+FUNCTION_TYPE.ARGS
+FUNCTION_TYPE.RETS
+
+LOCAL_DECLARATION.EXPS
+LOCAL_DECLARATION.VARS
+LOCAL_DECLARATION.DECL
+
+LOCAL_FUNCTION.RETS
+LOCAL_FUNCTION.BODY
+LOCAL_FUNCTION.TYPEARGS
+LOCAL_FUNCTION.NAME
+LOCAL_FUNCTION.ARGS
+
+FORIN.EXPS
+FORIN.VARS
+FORIN.BODY
+
+GOTO.LABEL
+
+GLOBAL_FUNCTION.RETS
+GLOBAL_FUNCTION.BODY
+GLOBAL_FUNCTION.TYPEARGS
+GLOBAL_FUNCTION.NAME
+GLOBAL_FUNCTION.ARGS
+
+VARIABLE.ANNOTATION
+
+REPEAT.BODY
+REPEAT.COND
+
+LABEL.NAME
+
+IF_BLOCK.BODY
+IF_BLOCK.COND
+
+LOCAL_MACRO.RETS
+LOCAL_MACRO.BODY
+LOCAL_MACRO.TYPEARGS
+LOCAL_MACRO.NAME
+LOCAL_MACRO.ARGS
+
+FORNUM.TO
+FORNUM.VAR
+FORNUM.FROM
+FORNUM.BODY
+FORNUM.STEP
+
+ARGUMENT.ANNOTATION
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="behavior-rules"><a class="header" href="#behavior-rules">Behavior rules</a></h1>
 <p>This chapter describes in greater detail the various behaviors of the type system.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="type-aliasing-rules-in-teal"><a class="header" href="#type-aliasing-rules-in-teal">Type aliasing rules in Teal</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="type-aliasing-rules-in-teal"><a class="header" href="#type-aliasing-rules-in-teal">Type aliasing rules in Teal</a></h1>
 <h2 id="the-general-rule"><a class="header" href="#the-general-rule">The general rule</a></h2>
 <p>In Teal we can declare new types with user-defined names. These are called
 <em>nominal types</em>. These nominal types may be unique, or aliases.</p>
@@ -1239,7 +1821,7 @@ the future.</p>
 it another user-defined nominal type, it becomes a <em>type alias</em>. Whenever you
 assign to it a type constructor, it becomes a new unique type. Type
 constructors are syntax constructs such as: block constructors for records,
-interfaces and enums (e.g. <code>record</code> ... <code>end</code>); function signature
+interfaces and enums (e.g. <code>record</code> … <code>end</code>); function signature
 declarations with <code>function()</code>; applications of generics with <code>&lt;&gt;</code>-notation;
 declarations of array, tuple or map types with <code>{}</code>-notation; or a primitive
 type name such as <code>number</code>.</p>
@@ -1349,7 +1931,8 @@ local type Function3 = Function1
 local f1: Function1
 assert(f1 is Function3) -- ok!
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="type-variable-matching"><a class="header" href="#type-variable-matching">Type variable matching</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="type-variable-matching"><a class="header" href="#type-variable-matching">Type variable matching</a></h1>
 <p>When Teal type-checks a generic function call, it infers any type variables
 based on context. Type variables can appear in function arguments and return
 types, so these are matched with the information available at the call site:</p>
@@ -1362,7 +1945,7 @@ appearing in function arguments.</li>
 <p>For example, given a generic function with the following type:</p>
 <pre><code class="language-lua">local my_f: function&lt;T, U&gt;(T): U
 </code></pre>
-<p>...the following call will infer <code>T</code> to <code>boolean</code> and <code>U</code>
+<p>…the following call will infer <code>T</code> to <code>boolean</code> and <code>U</code>
 to <code>string</code>.</p>
 <pre><code>local s: string = my_f(true)
 </code></pre>
@@ -1443,20 +2026,21 @@ local s: Square = { area = 20, name = "square" }
 
 local l = largest(c, s)
 </code></pre>
-<p>...which results in <code>l</code> having type <code>Circle | Square</code>.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="pragmas"><a class="header" href="#pragmas">Pragmas</a></h1>
+<p>…which results in <code>l</code> having type <code>Circle | Square</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="pragmas"><a class="header" href="#pragmas">Pragmas</a></h1>
 <p>Teal is evolving as a language. Sometimes we need to add incompatible changes
-to the language, but we don't want to break everybody's code at once. The way
+to the language, but we don’t want to break everybody’s code at once. The way
 to deal with this is by adding <em>pragmatic annotations</em> (typically known in
-compiler lingo as "pragmas") that tell the compiler about how to interpret
-various minutiae of the language, in practice picking which "dialect" of the
+compiler lingo as “pragmas”) that tell the compiler about how to interpret
+various minutiae of the language, in practice picking which “dialect” of the
 language to use. This lets the programmer pedal back on certain language
 changes and adopt them gradually as the existing codebase is converted to the
 new version.</p>
-<p>Let's look at a concrete example where pragmas can help us: function arity
+<p>Let’s look at a concrete example where pragmas can help us: function arity
 checks.</p>
 <h2 id="function-arity-checks"><a class="header" href="#function-arity-checks">Function arity checks</a></h2>
-<p>If you're coming from an older version of Teal, it is possible that you will
+<p>If you’re coming from an older version of Teal, it is possible that you will
 start getting lots of errors related to numbers of arguments, such as:</p>
 <pre><code>wrong number of arguments (given 2, expects 4)
 </code></pre>
@@ -1483,12 +2067,12 @@ greet("Hello")         --&gt; Hello!
 greet() --&gt; compile error: wrong number of arguments (given 0, expects at least 1 and at most 2)
 </code></pre>
 <p>However, there are many Teal libraries out there (and Lua libraries for which
-<a href="declaration_files.html">.d.tl type declaration files</a> were written), which were
+<a href="#type-definitions-for-third-party-libraries">.d.tl type declaration files</a> were written), which were
 prepared for earlier versions of Teal.</p>
-<p>The good news is that you don't have to convert all of them at once, neither
+<p>The good news is that you don’t have to convert all of them at once, neither
 you have to make an all-or-nothing choice whether to have or not those
 function arity checks.</p>
-<p>You can enable or disable arity checks using the <code>arity</code> pragma. Let's first
+<p>You can enable or disable arity checks using the <code>arity</code> pragma. Let’s first
 assume we have an old library written for older versions of Teal:</p>
 <pre><code class="language-lua">-- old_library.tl
 local record old_library
@@ -1505,7 +2089,7 @@ end
 
 return old_library
 </code></pre>
-<p>Now we want to use this library with the current version of Teal, but we don't
+<p>Now we want to use this library with the current version of Teal, but we don’t
 want to lose arity checks in our own code. We can temporarily disable arity
 checks, require the library, then re-enable them:</p>
 <pre><code class="language-lua">--#pragma arity off
@@ -1531,7 +2115,7 @@ old_library.greet() --&gt; runtime error: attempt to concatenate a nil value (lo
 <p>The <code>arity</code> pragma was introduced as a way to gradually convert codebases, as
 opposed to the wholesale approach of passing <code>--feat-arity=off</code> to the
 compiler command-line or setting <code>feat_arity = "off"</code> in <code>tlconfig.lua</code>, the
-<a href="compiler_options.html">compiler options</a> file.</p>
+<a href="#compiler-options">compiler options</a> file.</p>
 <h3 id="optional-arities-versus-optional-values"><a class="header" href="#optional-arities-versus-optional-values">Optional arities versus optional values</a></h3>
 <p>Note that arity checks are about the number of <em>expressions</em> used as arguments
 in function calls: it does not check whether the <em>values</em> are <code>nil</code> or not.
@@ -1543,8 +2127,8 @@ future version of Teal. When that happens, we will definitely need a <code>pragm
 to allow for gradual adoption of it!</p>
 <h2 id="what-pragmas-are-not"><a class="header" href="#what-pragmas-are-not">What pragmas are not</a></h2>
 <p>One final word about pragmas: there is no well-established definition for a
-"compiler pragma" in the literature, even though this is a common term.</p>
-<p>It's important to clarify here that Teal pragmas are not intended as
+“compiler pragma” in the literature, even though this is a common term.</p>
+<p>It’s important to clarify here that Teal pragmas are not intended as
 general-purpose annotations (the kind of things you usually see with <code>@-</code>
 syntax in various other languages such as C#, Java or <code>#[]</code> in Rust). Pragmas
 here are intended as compiler directives, more akin to compiler flags (e.g.
@@ -1552,7 +2136,9 @@ the <code>#pragma</code> use in C compilers).</p>
 <p>In short, our practical goal for pragmas is to allow for handling
 compatibility issues when dealing with the language evolution. That is, in a
 Teal codebase with no legacy concerns, there should be no pragmas.</p>
-<div style="break-before: page; page-break-before: always;"></div><h3 id="current-limitations-of-union-types"><a class="header" href="#current-limitations-of-union-types">Current limitations of union types</a></h3>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="current-limitations-on-union-types"><a href="#current-limitations-on-union-types" class="header">Current limitations on union types</a></h1>
+<h3 id="current-limitations-of-union-types"><a class="header" href="#current-limitations-of-union-types">Current limitations of union types</a></h3>
 <p>In the current version, there are two main limitations regarding support
 for union types in Teal.</p>
 <p>The first one is that the <code>is</code> operator always matches a variable, not arbitrary
@@ -1599,7 +2185,9 @@ strings at runtime. So, for now these are also not accepted:</p>
 local invalid5: MyEnum | AnotherEnum
 </code></pre>
 <p>This restriction on enums may be removed in the future.</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="using-tl-with-lua"><a class="header" href="#using-tl-with-lua">Using tl with Lua</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="using-tl-with-lua-1"><a href="#using-tl-with-lua-1" class="header">Using tl with Lua</a></h1>
+<h2 id="using-tl-with-lua"><a class="header" href="#using-tl-with-lua">Using tl with Lua</a></h2>
 <p>You can use tl to type-check not only Teal programs, but Lua programs too! When
 type-checking Lua files (with the .lua extension or a Lua <code>#!</code> identifier in
 the first line), the type-checker adds support for an extra type:</p>
@@ -1612,7 +2200,7 @@ Lua file you can declare untyped variables as usual:</p>
 </code></pre>
 <p>When processing .lua files, tl will report no errors involving unknown
 variables. Anything pertaining unknown variables is, well, unknown. Think of .tl
-files as the safer, "strict mode", and .lua files as the looser "lax mode".
+files as the safer, “strict mode”, and .lua files as the looser “lax mode”.
 However, even a Lua file with no annotations whatsoever will still have a bunch
 of types: every literal value (numbers, strings, arrays, etc.) has a type.
 Variables initialized on declaration are also assumed to keep consistent types
@@ -1633,8 +2221,9 @@ Lua, you can still do so and load them from the Lua VM once the Teal package
 loader is installed by calling <code>tl.loader()</code>.</p>
 <p>You can also create declaration files to annotate the types of third-party Lua
 modules, including C Lua modules.
-For more information, see the <a href="declaration_files.html">declaration files</a> page.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="type-definitions-for-third-party-libraries"><a class="header" href="#type-definitions-for-third-party-libraries">Type definitions for third party libraries</a></h1>
+For more information, see the <a href="#type-definitions-for-third-party-libraries">declaration files</a> page.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="type-definitions-for-third-party-libraries"><a class="header" href="#type-definitions-for-third-party-libraries">Type definitions for third party libraries</a></h1>
 <p>You can create declaration files to annotate the types of third-party Lua
 modules, including C Lua modules. To do so, create a file with the .d.tl
 extension and require it as normal, i.e. <code>local lfs = require("lfs")</code>.</p>
@@ -1674,8 +2263,8 @@ end
 space as global variables. An example of an environment
 which presents this behavior is <a href="https://love2d.org">LÖVE</a>,
 which predefines a <code>love</code> global table containing its API. This global is
-just "there", and code written for that environment assumes it is available,
-even if you don't load it with <code>require</code>.</p>
+just “there”, and code written for that environment assumes it is available,
+even if you don’t load it with <code>require</code>.</p>
 <p>To make the Teal compiler aware of such globals, you can define them
 inside a declaration file, and tell the compiler to load the declaration module into its own type
 checking environment, using the <code>--global-env-def</code> flag in the CLI or the
@@ -1717,13 +2306,15 @@ global definitions that were already loaded into a customized Lua VM.</p>
 <p>The <a href="https://github.com/teal-language/teal-types">Teal Types</a> repo contains
 declaration files for some commonly-used Lua libraries.</p>
 <p>Feel free to check it out and make your contribution!</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="the-teal-standard-library-and-lua-compatibility"><a class="header" href="#the-teal-standard-library-and-lua-compatibility">The Teal Standard Library and Lua compatibility</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="the-teal-standard-library-and-lua-compatibility-1"><a href="#the-teal-standard-library-and-lua-compatibility-1" class="header">The Teal Standard Library and Lua compatibility</a></h1>
+<h2 id="the-teal-standard-library-and-lua-compatibility"><a class="header" href="#the-teal-standard-library-and-lua-compatibility">The Teal Standard Library and Lua compatibility</a></h2>
 <p>tl supports a fair subset of the Lua 5.3 standard library (even in other Lua
 versions, using <a href="https://github.com/keplerproject/lua-compat-5.3">compat-5.3</a>),
 avoiding 5.3-isms that are difficult to reproduce in other Lua implementations.</p>
 <p>It declares all entries of the standard library as <code>&lt;const&gt;</code>, and assumes that
-Lua libraries don't modify it. If your Lua environment modifies the standard
-library with incompatible behaviors, tl will be oblivious to it and you're on
+Lua libraries don’t modify it. If your Lua environment modifies the standard
+library with incompatible behaviors, tl will be oblivious to it and you’re on
 your own.</p>
 <p>The Teal compiler also supports Lua-5.3-style bitwise operators (<code>&amp;</code>, <code>|</code>, <code>~</code>,
 <code>&lt;&lt;</code>, <code>&gt;&gt;</code>) and the integer division <code>//</code> operator on all supported Lua
@@ -1735,7 +2326,8 @@ code generated by your Teal program may not behave consistently across different
 target Lua versions, and differences in behavior across Lua standard libraries
 will reflect in Teal. In particular, the operator support described above may
 not work.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="compiler-options"><a class="header" href="#compiler-options">Compiler options</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="compiler-options"><a class="header" href="#compiler-options">Compiler options</a></h1>
 <p><code>tl</code> supports some compiler options. These can either be specified on the command line or inside a <code>tlconfig.lua</code> file.</p>
 <h2 id="project-configuration"><a class="header" href="#project-configuration">Project configuration</a></h2>
 <p>When running <code>tl</code>, the compiler will try to read the compilation options from a file called <code>tlconfig.lua</code> inside the current working directory.</p>
@@ -1748,17 +2340,23 @@ not work.</p>
 }
 </code></pre>
 <h2 id="list-of-compiler-options"><a class="header" href="#list-of-compiler-options">List of compiler options</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>Command line option</th><th>Config key</th><th>Type</th><th>Relevant Commands</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Command line option</th><th>Config key</th><th>Type</th><th>Relevant Commands</th><th>Description</th></tr>
+</thead>
+<tbody>
 <tr><td><code>-l --require</code></td><td></td><td><code>{string}</code></td><td><code>run</code></td><td>Require a module prior to executing the script. This is similar in behavior to the <code>-l</code> flag in the Lua interpreter.</td></tr>
 <tr><td><code>-I --include-dir</code></td><td><code>include_dir</code></td><td><code>{string}</code></td><td><code>check</code> <code>gen</code> <code>run</code></td><td>Prepend this directory to the module search path.</td></tr>
-<tr><td><code>--gen-compat</code></td><td><code>gen_compat</code></td><td><code>string</code></td><td><code>gen</code> <code>run</code></td><td>Generate compatibility code for targeting different Lua VM versions. See <a href="compiler_options.html#generated-code">below</a> for details.</td></tr>
-<tr><td><code>--gen-target</code></td><td><code>gen_target</code></td><td><code>string</code></td><td><code>gen</code> <code>run</code></td><td>Minimum targeted Lua version for generated code. Options are <code>5.1</code>, <code>5.3</code> and <code>5.4</code>. See <a href="compiler_options.html#generated-code">below</a> for details.</td></tr>
+<tr><td><code>--gen-compat</code></td><td><code>gen_compat</code></td><td><code>string</code></td><td><code>gen</code> <code>run</code></td><td>Generate compatibility code for targeting different Lua VM versions. See <a href="#generated-code">below</a> for details.</td></tr>
+<tr><td><code>--gen-target</code></td><td><code>gen_target</code></td><td><code>string</code></td><td><code>gen</code> <code>run</code></td><td>Minimum targeted Lua version for generated code. Options are <code>5.1</code>, <code>5.3</code> and <code>5.4</code>. See <a href="#generated-code">below</a> for details.</td></tr>
 <tr><td><code>--keep-hashbang</code></td><td></td><td></td><td><code>gen</code></td><td>Preserve hashbang line (<code>#!</code>) at the top of file if present.</td></tr>
-<tr><td><code>-p --pretend</code></td><td></td><td></td><td><code>gen</code></td><td>Don't compile/write to any files, but type check and log what files would be written to.</td></tr>
+<tr><td><code>-p --pretend</code></td><td></td><td></td><td><code>gen</code></td><td>Don’t compile/write to any files, but type check and log what files would be written to.</td></tr>
 <tr><td><code>--wdisable</code></td><td><code>disable_warnings</code></td><td><code>{string}</code></td><td><code>check</code> <code>run</code></td><td>Disable the given warnings.</td></tr>
 <tr><td><code>--werror</code></td><td><code>warning_error</code></td><td><code>{string}</code></td><td><code>check</code> <code>run</code></td><td>Promote the given warnings to errors.</td></tr>
-<tr><td><code>--global-env-def</code></td><td><code>global_env_def</code></td><td><code>string</code></td><td><code>check</code> <code>gen</code> <code>run</code></td><td>Specify a definition module declaring any custom globals predefined in your Lua environment. See the <a href="declaration_files.html#global-environment-definition">declaration files</a> page for details.</td></tr>
-</tbody></table>
+<tr><td><code>--global-env-def</code></td><td><code>global_env_def</code></td><td><code>string</code></td><td><code>check</code> <code>gen</code> <code>run</code></td><td>Specify a definition module declaring any custom globals predefined in your Lua environment. See the <a href="#global-environment-definition">declaration files</a> page for details.</td></tr>
+</tbody>
+</table>
 </div>
 <h3 id="generated-code"><a class="header" href="#generated-code">Generated code</a></h3>
 <p>Teal is a Lua dialect that most closely resembles Lua 5.3-5.4, but it is able
@@ -1798,22 +2396,22 @@ will output code that uses 5.3 extensions.</p>
 <p>The stand-alone <code>tl</code> binaries are built using Lua 5.4, so they default to
 generating 5.3-compatible code. If you install <code>tl</code> using LuaRocks, the CLI
 will use the Lua version you use with LuaRocks, so it will default to that
-Lua's version.</p>
+Lua’s version.</p>
 <p>If you require the <code>tl</code> Lua module and use the <code>tl.loader()</code>, it will do the
 implicit version selection, picking the right choice based on the Lua version
-you're running it on.</p>
+you’re running it on.</p>
 <h4 id="compatibility-wrappers"><a class="header" href="#compatibility-wrappers">Compatibility wrappers</a></h4>
 <p>Another source of incompatibility across Lua versions is the standard library.
 This is mostly fixable via compatibility wrappers, implemented by the
 <a href="https://github.com/keplerproject/lua-compat-5.3">compat53</a> Lua library.</p>
-<p>Teal's own standard library definition as used by its type checker most
-closely resembles that of Lua 5.3+, and the compiler's code generator can
+<p>Teal’s own standard library definition as used by its type checker most
+closely resembles that of Lua 5.3+, and the compiler’s code generator can
 generate code that uses compat53 in order to produce consistent behavior
 across Lua versions, at the cost of adding a dependency when running on older
 Lua versions. For Lua 5.3 and above, compat53 is never needed.</p>
 <p>To avoid forcing a dependency on Teal users running Lua 5.1, 5.2 or LuaJIT,
 especially those who take care to avoid incompatibilities in the Lua standard
-library and hence wouldn't need compat53 in their code, Teal offers three
+library and hence wouldn’t need compat53 in their code, Teal offers three
 modes of operation for compatibility wrapper generation via the <code>gen_compat</code>
 flag (and <code>--gen-compat</code> CLI option):</p>
 <ul>
@@ -1824,12 +2422,12 @@ from the standard library that is not available on that version, you will
 get a runtime error, similar to trying to run Lua 5.3 code on an older version.</li>
 <li><code>optional</code> (<em>default</em>) - Teal will generate compatibility code which
 initializes the the compat53 library wrapping <code>require</code> with a <code>pcall</code>,
-so that it doesn't produce a failure if the library is missing. This means
-that, if compat53 is installed, you'll get the compliant standard library
+so that it doesn’t produce a failure if the library is missing. This means
+that, if compat53 is installed, you’ll get the compliant standard library
 behavior when running on Lua 5.2 and below, but if compat53 is missing,
-you'll get the same behavior as described for <code>off</code> above.</li>
+you’ll get the same behavior as described for <code>off</code> above.</li>
 <li><code>required</code> - Teal will generate compatibility code which initializes compat53
-with a plain <code>require</code>, meaning that you'll get a runtime error when loading
+with a plain <code>require</code>, meaning that you’ll get a runtime error when loading
 the generated module from Lua if compat53 is missing. You can use this option
 if you are distributing the generated Lua code for users running different
 Lua versions and you want to ensure that your Teal code behaves the same
@@ -1839,12 +2437,13 @@ way on all Lua versions, even if at the cost of an additional dependency.</li>
 <p>To make the Teal compiler aware of global variables in your execution environment,
 you may pass a declaration module to the compiler using the <code>--global-env-def</code> flag
 in the CLI or the <code>global_env_def</code> string in <code>tlconfig.lua</code>.</p>
-<p>For more information, see the <a href="declaration_files.html#global-environment-definition">declaration files</a> page.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="hacking-on-tl-itself"><a class="header" href="#hacking-on-tl-itself">Hacking on tl itself</a></h1>
+<p>For more information, see the <a href="#global-environment-definition">declaration files</a> page.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="hacking-on-tl-itself"><a class="header" href="#hacking-on-tl-itself">Hacking on tl itself</a></h1>
 <p>As correctly pointed out in <a href="https://github.com/teal-language/tl/issues/51">#51</a>:</p>
 <blockquote>
 <p>Creating and testing edits to <code>tl.tl</code> can feel a bit awkward because
-changing <code>tl</code> itself requires bootstrapping from a "working" version
+changing <code>tl</code> itself requires bootstrapping from a “working” version
 of <code>tl</code>.</p>
 </blockquote>
 <h2 id="keeping-tl-working"><a class="header" href="#keeping-tl-working">Keeping tl working</a></h2>
@@ -1873,19 +2472,19 @@ written using non-generic types, resorting to <code>any</code> and ugly casts. O
 the tests for generics were passing, then the code of <code>tl.tl</code> itself was
 modified to use it.</p>
 <p>If you find yourself in a circular-dependency situation like this (sometimes
-it's a bug you need fixed in the compiler and the compiler needs the bug
+it’s a bug you need fixed in the compiler and the compiler needs the bug
 fixed to run correctly), the last-resort alternative is to copy the fix
 manually to <code>tl.lua</code>, stripping out the types in your new code by hand,
 then running both (you may want to save your changes in a backup commit
 before trying it, as you might accidentally overwrite your manual changes!).
-Again, this manual editing of <code>tl.lua</code> shouldn't generally be necessary
+Again, this manual editing of <code>tl.lua</code> shouldn’t generally be necessary
 if you take care to not depend on work-in-progress features.</p>
 <h2 id="sending-code-contributions"><a class="header" href="#sending-code-contributions">Sending code contributions</a></h2>
 <p>When submitting a pull request, make sure you include in your commits both the
 changes to <code>tl.tl</code> and <code>tl.lua</code>. They should match of course (the <code>tl.lua</code>
 should be the product of compiling <code>tl.tl</code>). In general, Git repositories do
 not contain generated files, but we keep both in the repository precisely to
-avoid the chicken-and-egg bootstrapping situation (if we didn't, one would
+avoid the chicken-and-egg bootstrapping situation (if we didn’t, one would
 have to have a previous <code>tl</code> installation already in order to run <code>tl</code> from a
 Git repo clone).</p>
 <p>When sending a PR that adds a new feature or fixes a bug, please add one or more
@@ -1896,7 +2495,8 @@ working in the future as other changes are made to the project. For bug fixes,
 the ideal test is a regression test: a test that would fail when running with
 the unmodified version of the compiler, but passes when running the corrected
 compiler.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="the-grammar-of-teal"><a class="header" href="#the-grammar-of-teal">The Grammar of Teal</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="the-grammar-of-teal"><a class="header" href="#the-grammar-of-teal">The Grammar of Teal</a></h1>
 <p>Here is the complete syntax of Teal in extended BNF, based on the Lua 5.4
 grammar. Lines starting with <code>+</code> are existing lines from the Lua grammar
 with additions; lines marked with <code>*</code> are entirely new.</p>
@@ -2048,14 +2648,16 @@ precedence, see below.</p>
 <p>As usual, you can use parentheses to change the precedences of an expression.
 The concatenation (<code>..</code>) and exponentiation (<code>^</code>) operators are right
 associative. All other binary operators are left associative.</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="other-related-projects"><a class="header" href="#other-related-projects">Other related projects</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="other-related-projects-1"><a href="#other-related-projects-1" class="header">Other related projects</a></h1>
+<h2 id="other-related-projects"><a class="header" href="#other-related-projects">Other related projects</a></h2>
 <p>Here is a short overview of other projects related to Lua and types, prompted by <a href="https://github.com/teal-language/tl/issues/24">this question at Github</a>:</p>
 <ul>
-<li><a href="https://github.com/andremm/typedlua">Typed Lua</a> was a research project started as @andremm's PhD thesis at PUC-Rio, co-advised by @mascarenhas which also got contributions from some students over time. It was a big exploration of optional typing for Lua and lots of lessons were learned there (see the various published papers!). The focus being on research results, the implementation itself for most of the time remained more of a proof-of-concept of this research, rather than a practical tool. The original developers moved on to other things, and the repo hasn't had updates in a year.</li>
-<li><a href="https://github.com/titan-lang/titan">Titan</a> started as a community project between myself (maintainer of <a href="https://luarocks.org">LuaRocks</a> and a PUC-Rio alumnus), the Typed Lua devs mentioned above, plus grad students at PUC-Rio @hugomg and @gligneul who at the time were studying optional typing and compilation techniques. The idea was to join forces and build something that would make everyone happy: I wanted a Lua for programming-in-the-large, the Typed Lua people wanted a typed dialect of Lua, and grad students wanted a high-performance Lua. The "companion language" concept seemed to fit the bill, being a "Lua-ish language you'd use instead of falling back to C or doing contortions to please the JIT compiler gods".</li>
-<li><a href="https://github.com/pallene-lang/pallene">Pallene</a> started as a fork of Titan because, as you can guess, design-by-committee is challenging, especially when people in the committee have different goals. :) Since grad students work under a deadline to produce results, the ideal situation was to have the academic side of Titan fork into its own project, which is currently active, healthy and continues with the evolution of the "companion language" concept. Titan went dormant as the others moved on: and as far as I'm concerned, Titan is now dead but I hope it will prove to have been a worthwhile kickstarting effort once Pallene starts to bear fruit.</li>
+<li><a href="https://github.com/andremm/typedlua">Typed Lua</a> was a research project started as @andremm’s PhD thesis at PUC-Rio, co-advised by @mascarenhas which also got contributions from some students over time. It was a big exploration of optional typing for Lua and lots of lessons were learned there (see the various published papers!). The focus being on research results, the implementation itself for most of the time remained more of a proof-of-concept of this research, rather than a practical tool. The original developers moved on to other things, and the repo hasn’t had updates in a year.</li>
+<li><a href="https://github.com/titan-lang/titan">Titan</a> started as a community project between myself (maintainer of <a href="https://luarocks.org">LuaRocks</a> and a PUC-Rio alumnus), the Typed Lua devs mentioned above, plus grad students at PUC-Rio @hugomg and @gligneul who at the time were studying optional typing and compilation techniques. The idea was to join forces and build something that would make everyone happy: I wanted a Lua for programming-in-the-large, the Typed Lua people wanted a typed dialect of Lua, and grad students wanted a high-performance Lua. The “companion language” concept seemed to fit the bill, being a “Lua-ish language you’d use instead of falling back to C or doing contortions to please the JIT compiler gods”.</li>
+<li><a href="https://github.com/pallene-lang/pallene">Pallene</a> started as a fork of Titan because, as you can guess, design-by-committee is challenging, especially when people in the committee have different goals. :) Since grad students work under a deadline to produce results, the ideal situation was to have the academic side of Titan fork into its own project, which is currently active, healthy and continues with the evolution of the “companion language” concept. Titan went dormant as the others moved on: and as far as I’m concerned, Titan is now dead but I hope it will prove to have been a worthwhile kickstarting effort once Pallene starts to bear fruit.</li>
 </ul>
-<p>So <strong>tl;dr:</strong>: as of 2020, Typed Lua and Titan aren't active, Pallene is a project aiming to generate native-code modules for use with the Lua interpreter, and Teal is a dialect of Lua plus types implemented as a transpiler which outputs Lua.</p>
+<p>So <strong>tl;dr:</strong>: as of 2020, Typed Lua and Titan aren’t active, Pallene is a project aiming to generate native-code modules for use with the Lua interpreter, and Teal is a dialect of Lua plus types implemented as a transpiler which outputs Lua.</p>
 
                     </main>
 
@@ -2074,6 +2676,11 @@ associative. All other binary operators are left associative.</p>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -2082,13 +2689,13 @@ associative. All other binary operators are left associative.</p>
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
 
