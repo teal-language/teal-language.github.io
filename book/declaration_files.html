@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - The Teal Programming Language</title>
+        <title>Type definitions for third party libraries - The Teal Programming Language</title>
 
 
         <!-- Custom HTML head -->
@@ -174,24 +174,99 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
-<p>This book is the primary source of documentation for the Teal programming
-language.</p>
-<p>Teal is a statically-typed dialect of <a href="https://www.lua.org">Lua</a>. It extends
-Lua with type annotations, allowing you to specify arrays, maps and records,
-as well as interfaces, union types and generics.</p>
-<p>It aims to fill a niche similar to that of TypeScript in the JavaScript world,
-but adhering to Lua’s spirit of minimalism, portability and embeddability.</p>
-<p>Is it implemented as a compiler, <a href="https://github.com/teal-language/tl">tl</a>,
-which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
+                        <h1 id="type-definitions-for-third-party-libraries"><a class="header" href="#type-definitions-for-third-party-libraries">Type definitions for third party libraries</a></h1>
+<p>You can create declaration files to annotate the types of third-party Lua
+modules, including C Lua modules. To do so, create a file with the .d.tl
+extension and require it as normal, i.e. <code>local lfs = require("lfs")</code>.</p>
+<p>Types defined in this module will will be used as a source of type information
+checking with <code>tl check</code>, even though the real Lua module will be loaded
+instead when requiring the module from Lua or <code>tl run</code>.</p>
+<h2 id="visibility"><a class="header" href="#visibility">Visibility</a></h2>
+<p>There are two ways to define these types:</p>
+<h3 id="composite-types"><a class="header" href="#composite-types">Composite Types</a></h3>
+<pre><code>local record MyCompositeType
+   record MyPointType
+      x: number
+      y: number
+   end
+
+   center: MyPointType
+    -- insert more stuff here
+end
+
+return MyCompositeType
+</code></pre>
+<p>This will mean that references to <code>MyPointType</code> must be qualified (or locally declared) as
+<code>MyCompositeType.MyPointType</code>.</p>
+<h3 id="global-types"><a class="header" href="#global-types">Global Types</a></h3>
+<pre><code>global record MyPointType
+   x: number
+   y: number
+end
+
+global record MyCompositeType
+   center: MyPointType
+end
+</code></pre>
+<p>These can now be used unqualified in any file that requires them.</p>
+<h4 id="global-environment-definition"><a class="header" href="#global-environment-definition">Global environment definition</a></h4>
+<p>Some customized Lua environments predefine some values into the Lua VM
+space as global variables. An example of an environment
+which presents this behavior is <a href="https://love2d.org">LÖVE</a>,
+which predefines a <code>love</code> global table containing its API. This global is
+just “there”, and code written for that environment assumes it is available,
+even if you don’t load it with <code>require</code>.</p>
+<p>To make the Teal compiler aware of such globals, you can define them
+inside a declaration file, and tell the compiler to load the declaration module into its own type
+checking environment, using the <code>--global-env-def</code> flag in the CLI or the
+<code>global_env_def</code> string in <code>tlconfig.lua</code>.</p>
+<p>For example, if you have a file called <code>love-example.d.tl</code> containing the
+definitions for LÖVE:</p>
+<pre><code>-- love-example.d.tl
+
+global record love
+   record graphics
+      print: function(text: string, x: number, y: number)
+   end
+end
+</code></pre>
+<p>You can put <code>global_env_def = "love-example"</code> in a <code>tlconfig.lua</code> file at
+the root of your project, and <code>tl</code> will now assume that any globals declared
+in <code>love-example.d.tl</code> are available to other modules being compiled:</p>
+<pre><code>-- tlconfig.lua
+
+return {
+   global_env_def = "love-example"
+}
+</code></pre>
+<p>Example usage:</p>
+<pre><code>-- main.tl
+
+love.graphics.print("hello!", 0, 0)
+</code></pre>
+<pre><code>$ tl check main.tl
+========================================
+Type checked main.tl
+0 errors detected
+</code></pre>
+<p>Note that when using <code>tl gen</code>, this option does not generate code for the
+global environment module, and when using <code>tl run</code> it does not execute the
+module either. This option is only meant to make the compiler aware of any
+global definitions that were already loaded into a customized Lua VM.</p>
+<h2 id="reusing-existing-declaration-files-and-contributing-new-ones"><a class="header" href="#reusing-existing-declaration-files-and-contributing-new-ones">Reusing existing declaration files (and contributing new ones!)</a></h2>
+<p>The <a href="https://github.com/teal-language/teal-types">Teal Types</a> repo contains
+declaration files for some commonly-used Lua libraries.</p>
+<p>Feel free to check it out and make your contribution!</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="using_tl_with_lua.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
-                            <a rel="next prefetch" href="about.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="teal_standard_library_and_lua_compatibility.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -201,8 +276,11 @@ which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="using_tl_with_lua.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
-                    <a rel="next prefetch" href="about.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="teal_standard_library_and_lua_compatibility.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

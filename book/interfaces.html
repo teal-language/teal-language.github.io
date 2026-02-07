@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - The Teal Programming Language</title>
+        <title>Interfaces - The Teal Programming Language</title>
 
 
         <!-- Custom HTML head -->
@@ -174,24 +174,134 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
-<p>This book is the primary source of documentation for the Teal programming
-language.</p>
-<p>Teal is a statically-typed dialect of <a href="https://www.lua.org">Lua</a>. It extends
-Lua with type annotations, allowing you to specify arrays, maps and records,
-as well as interfaces, union types and generics.</p>
-<p>It aims to fill a niche similar to that of TypeScript in the JavaScript world,
-but adhering to Lua’s spirit of minimalism, portability and embeddability.</p>
-<p>Is it implemented as a compiler, <a href="https://github.com/teal-language/tl">tl</a>,
-which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
+                        <h2 id="interfaces"><a class="header" href="#interfaces">Interfaces</a></h2>
+<p>Interfaces are, in essence, abstract records.</p>
+<p>A concrete record is a type declared with <code>record</code>, which can be used
+both as a Lua table and as a type. In object-oriented terms, the record
+itself works as class whose fields work as class attributes,
+while other tables declared with the record type are objects whose
+fields are object attributes. For example:</p>
+<pre><code class="language-lua">local record MyConcreteRecord
+   a: string
+   x: integer
+   y: integer
+end
+
+MyConcreteRecord.a = "this works"
+
+local obj: MyConcreteRecord = { x = 10, y = 20 } -- this works too
+</code></pre>
+<p>An interface is abstract. It can declare fields, including those of
+<code>function</code> type, but they cannot hold concrete values on their own.
+Instances of an interface can hold values.</p>
+<pre><code class="language-lua">local interface MyAbstractInterface
+   a: string
+   x: integer
+   y: integer
+   my_func: function(self, integer)
+   another_func: function(self, integer, self)
+end
+
+MyAbstractInterface.a = "this doesn't work" -- error!
+
+local obj: MyAbstractInterface = { x = 10, y = 20 } -- this works
+
+-- error! this doesn't work
+function MyAbstractInterface:my_func(n: integer)
+end
+
+-- however, this works
+obj.my_func = function(self: MyAbstractInterface, n: integer)
+end
+</code></pre>
+<p>What is most useful about interfaces is that records can inherit
+interfaces, using <code>is</code>:</p>
+<pre><code class="language-lua">local record MyRecord is MyAbstractInterface
+   b: string
+end
+
+local r: MyRecord = {}
+r.b = "this works"
+r.a = "this works too because 'a' comes from MyAbstractInterface"
+</code></pre>
+<p>Note that the definition of <code>my_func</code> used <code>self</code> as a type name. <code>self</code>
+is a valid type that can be used when declaring arguments in functions
+declared in interfaces and records. When a record is declared to be a subtype
+of an interface using <code>is</code>, any function arguments using <code>self</code> in the parent
+interface type will then resolve to the child record’s type. The type signature
+of <code>another_func</code> makes it even more evident:</p>
+<pre><code class="language-lua">-- the following function complies to the type declared for `another_func`
+-- in MyAbstractInterface, because MyRecord is the `self` type in this context
+function MyRecord:another_func(n: integer, another: MyRecord)
+   print(n + self.x, another.b)
+end
+</code></pre>
+<p>Records and interfaces can inherit from multiple interfaces,
+as long as their component parts are compatible (that is, as long
+as the parent interfaces don’t declare fields with the same name
+but different types). Here is an example showing how incompatible
+fields need to be stated explicitly, but compatible fields can be
+inherited:</p>
+<pre><code class="language-lua">local interface Shape
+   x: number
+   y: number
+end
+
+local interface Colorful
+   r: integer
+   g: integer
+   b: integer
+end
+
+local interface SecondPoint
+   x2: number
+   y2: number
+   get_distance: function(self): number
+end
+
+local record Line is Shape, SecondPoint
+end
+
+local record Square is Shape, SecondPoint, Colorful
+   get_area: function(self): number
+end
+
+--[[
+-- this produces a record with these fields,
+-- but Square also satisfies `Square is Shape`,
+-- `Square is SecondPoint`, `Square is Colorful`
+local record Square
+   x: number
+   y: number
+   x2: number
+   y2: number
+   get_distance: function(self): number
+   r: integer
+   g: integer
+   b: integer
+   get_area: function(self): number
+end
+]]
+</code></pre>
+<p>Keep in mind that this refers strictly to subtyping of interfaces, not
+inheritance of implementations. For that reason, records cannot inherit from
+other records; that is, you cannot use <code>is</code> to do <code>local record MyRecord is AnotherRecord</code>. You can define function fields in your interfaces and those
+definitions will be inherited (as in the <code>get_distance</code> and <code>get_area</code>
+examples above), but you need to ensure that the actual implementations of
+these functions are resolved at runtime the same way as they would do in Lua,
+most likely using metatables to perform implementation inheritance. Teal
+does not implement a class/object model of its own, as it aims to be compatible
+with the multiple class/object models that exist in the Lua ecosystem.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="records.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
-                            <a rel="next prefetch" href="about.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="generics.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -201,8 +311,11 @@ which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="records.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
-                    <a rel="next prefetch" href="about.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="generics.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

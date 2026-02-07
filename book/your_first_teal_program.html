@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - The Teal Programming Language</title>
+        <title>Your first Teal program - The Teal Programming Language</title>
 
 
         <!-- Custom HTML head -->
@@ -174,24 +174,65 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
-<p>This book is the primary source of documentation for the Teal programming
-language.</p>
-<p>Teal is a statically-typed dialect of <a href="https://www.lua.org">Lua</a>. It extends
-Lua with type annotations, allowing you to specify arrays, maps and records,
-as well as interfaces, union types and generics.</p>
-<p>It aims to fill a niche similar to that of TypeScript in the JavaScript world,
-but adhering to Lua’s spirit of minimalism, portability and embeddability.</p>
-<p>Is it implemented as a compiler, <a href="https://github.com/teal-language/tl">tl</a>,
-which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
+                        <h2 id="your-first-teal-program"><a class="header" href="#your-first-teal-program">Your first Teal program</a></h2>
+<p>Let’s start with a simple example, which declares a type-safe function. Let’s
+call this example <code>add.tl</code>:</p>
+<pre><code class="language-lua">local function add(a: number, b: number): number
+   return a + b
+end
+
+local s = add(1,2)
+print(s)
+</code></pre>
+<p>You can type-check it with</p>
+<pre><code>tl check add.tl
+</code></pre>
+<p>You can convert it to Lua with</p>
+<pre><code>tl gen add.tl
+</code></pre>
+<p>This will produce <code>add.lua</code>. But you can also run it directly with</p>
+<pre><code>tl run add.tl
+</code></pre>
+<p>We can also write modules in Teal which we can load from Lua. Let’s create our
+first module:</p>
+<pre><code class="language-lua">local addsub = {}
+
+function addsub.add(a: number, b: number): number
+   return a + b
+end
+
+function addsub.sub(a: number, b: number): number
+   return a - b
+end
+
+return addsub
+</code></pre>
+<p>We can generate <code>addsub.lua</code> with</p>
+<pre><code>tl gen addsub.tl
+</code></pre>
+<p>and then require the addsub module from Lua normally. Or we can load the Teal
+package loader, which will allow require to load .tl files directly, without
+having to run <code>tl gen</code> first:</p>
+<pre><code class="language-sh">$ rm addsub.lua
+$ lua
+&gt; tl = require("tl")
+&gt; tl.loader()
+&gt; addsub = require("addsub")
+&gt; print (addsub.add(10, 20))
+</code></pre>
+<p>When loading and running the Teal module from Lua, there is no type checking!
+Type checking will only happen when you run <code>tl check</code> or load a program with
+<code>tl run</code>.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="installing_tl.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
-                            <a rel="next prefetch" href="about.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="types_in_teal.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -201,8 +242,11 @@ which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="installing_tl.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
-                    <a rel="next prefetch" href="about.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="types_in_teal.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - The Teal Programming Language</title>
+        <title>Current limitations on union types - The Teal Programming Language</title>
 
 
         <!-- Custom HTML head -->
@@ -174,24 +174,63 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
-<p>This book is the primary source of documentation for the Teal programming
-language.</p>
-<p>Teal is a statically-typed dialect of <a href="https://www.lua.org">Lua</a>. It extends
-Lua with type annotations, allowing you to specify arrays, maps and records,
-as well as interfaces, union types and generics.</p>
-<p>It aims to fill a niche similar to that of TypeScript in the JavaScript world,
-but adhering to Lua’s spirit of minimalism, portability and embeddability.</p>
-<p>Is it implemented as a compiler, <a href="https://github.com/teal-language/tl">tl</a>,
-which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
+                        <h3 id="current-limitations-of-union-types"><a class="header" href="#current-limitations-of-union-types">Current limitations of union types</a></h3>
+<p>In the current version, there are two main limitations regarding support
+for union types in Teal.</p>
+<p>The first one is that the <code>is</code> operator always matches a variable, not arbitrary
+expressions. This limitation is there to avoid aliasing.</p>
+<p>The second one is that Teal only accepts unions over a set of types that
+it can discriminate at runtime, so that it can generate code for the
+<code>is</code> operator properly. That means we can either only use one table
+type in a union, or, if we want to use multiple table types in a union,
+they need to be records or interfaces that were declared with a <code>where</code>
+annotation to discriminate them.</p>
+<p>This means that these unions not accepted:</p>
+<pre><code class="language-lua">local invalid1: {string} | {number}
+local invalid2: {string} | {string:string}
+local invalid3: {string} | MyRecord
+</code></pre>
+<p>However, the following union can be accepted, if we declare the record
+types with <code>where</code> annotations:</p>
+<pre><code>local interface Named
+   name: string
+end
+
+local record MyRecord is Named
+   where self.name == "MyRecord"
+end
+
+local record AnotherRecord is Named
+   where self.name == "AnotherRecord"
+end
+
+local valid: MyRecord | AnotherRecord
+</code></pre>
+<p>A <code>where</code> clause is any Teal expression that uses the identifier <code>self</code>
+at most once (if you need to use it multiple times, you can always write
+a function that implements the discriminator expression and call that
+in the <code>where</code> clause passing <code>self</code> as an argument).</p>
+<p>Note that Teal has no way of proving at compile time that the set of <code>where</code>
+clauses in the union is actually disjoint and can discriminate the values
+correctly at runtime. Like the other aspects of setting up a Lua-based
+object model, that is up to you.</p>
+<p>Another limitation on <code>is</code> checks comes up with enums, since these also
+translate into <code>type()</code> checks. This means they are indistinguishable from
+strings at runtime. So, for now these are also not accepted:</p>
+<pre><code class="language-lua">local invalid4: string | MyEnum
+local invalid5: MyEnum | AnotherEnum
+</code></pre>
+<p>This restriction on enums may be removed in the future.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="pragmas.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
-                            <a rel="next prefetch" href="about.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="using_tl_with_lua.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -201,8 +240,11 @@ which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="pragmas.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
-                    <a rel="next prefetch" href="about.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="using_tl_with_lua.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - The Teal Programming Language</title>
+        <title>Metamethods - The Teal Programming Language</title>
 
 
         <!-- Custom HTML head -->
@@ -174,24 +174,62 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
-<p>This book is the primary source of documentation for the Teal programming
-language.</p>
-<p>Teal is a statically-typed dialect of <a href="https://www.lua.org">Lua</a>. It extends
-Lua with type annotations, allowing you to specify arrays, maps and records,
-as well as interfaces, union types and generics.</p>
-<p>It aims to fill a niche similar to that of TypeScript in the JavaScript world,
-but adhering to Lua’s spirit of minimalism, portability and embeddability.</p>
-<p>Is it implemented as a compiler, <a href="https://github.com/teal-language/tl">tl</a>,
-which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
+                        <h2 id="metamethods"><a class="header" href="#metamethods">Metamethods</a></h2>
+<p>Lua supports metamethods to provide some advanced features such as operator
+overloading. Like Lua tables, records support metamethods. To use metamethods
+in records you need to do two things:</p>
+<ul>
+<li>declare the metamethods in the record type using the <code>metamethod</code> word to
+benefit from static type checking;</li>
+<li>and assign the metatable with <code>setmetatable</code> as you would normally do in Lua
+to get the dynamic metatable behavior.</li>
+</ul>
+<p>Here is a complete example, showing the <code>metamethod</code> declarations in the
+<code>record</code> block and the <code>setmetatable</code> declarations attaching the metatable.</p>
+<pre><code class="language-lua">local type Rec = record
+   x: number
+   metamethod __call: function(Rec, string, number): string
+   metamethod __add: function(Rec, Rec): Rec
+end
+
+local rec_mt: metatable&lt;Rec&gt;
+rec_mt = {
+   __call = function(self: Rec, s: string, n: number): string
+      return tostring(self.x * n) .. s
+   end,
+   __add = function(a: Rec, b: Rec): Rec
+      local res: Rec = setmetatable({}, rec_mt)
+      res.x = a.x + b.x
+      return res
+   end,
+}
+
+local r: Rec = setmetatable({ x = 10 }, rec_mt)
+local s: Rec = setmetatable({ x = 20 }, rec_mt)
+
+r.x = 12
+print(r("!!!", 1000)) -- prints 12000!!!
+print((r + s).x)      -- prints 32
+</code></pre>
+<p>Note that we explicitly declare variables as <code>Rec</code> when initializing the
+declaration with <code>setmetatable</code>. The Teal standard library definition of
+<code>setmetatable</code> is <code>function&lt;T&gt;(T, metatable&lt;T&gt;): T</code>, so declaring the correct
+record type in the declaration assigns the record type to the type variable
+<code>T</code> in the return value of the function call, causing it to propagate to the
+argument types, matching the correct table and metatable types.</p>
+<p>Operator metamethods for integer division <code>//</code> and bitwise operators are
+supported even when Teal runs on top of Lua versions that do not support them
+natively, such as Lua 5.1.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="variable_attributes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
-                            <a rel="next prefetch" href="about.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="macroexp.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -201,8 +239,11 @@ which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="variable_attributes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
-                    <a rel="next prefetch" href="about.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="macroexp.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

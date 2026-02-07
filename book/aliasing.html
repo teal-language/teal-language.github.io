@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - The Teal Programming Language</title>
+        <title>Type aliasing rules - The Teal Programming Language</title>
 
 
         <!-- Custom HTML head -->
@@ -174,24 +174,134 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
-<p>This book is the primary source of documentation for the Teal programming
-language.</p>
-<p>Teal is a statically-typed dialect of <a href="https://www.lua.org">Lua</a>. It extends
-Lua with type annotations, allowing you to specify arrays, maps and records,
-as well as interfaces, union types and generics.</p>
-<p>It aims to fill a niche similar to that of TypeScript in the JavaScript world,
-but adhering to Lua’s spirit of minimalism, portability and embeddability.</p>
-<p>Is it implemented as a compiler, <a href="https://github.com/teal-language/tl">tl</a>,
-which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
+                        <h1 id="type-aliasing-rules-in-teal"><a class="header" href="#type-aliasing-rules-in-teal">Type aliasing rules in Teal</a></h1>
+<h2 id="the-general-rule"><a class="header" href="#the-general-rule">The general rule</a></h2>
+<p>In Teal we can declare new types with user-defined names. These are called
+<em>nominal types</em>. These nominal types may be unique, or aliases.</p>
+<p>The <code>local type</code> syntax produces a new <em>nominal type</em>. Whenever you assign to
+it another user-defined nominal type, it becomes a <em>type alias</em>. Whenever you
+assign to it a type constructor, it becomes a new unique type. Type
+constructors are syntax constructs such as: block constructors for records,
+interfaces and enums (e.g. <code>record</code> … <code>end</code>); function signature
+declarations with <code>function()</code>; applications of generics with <code>&lt;&gt;</code>-notation;
+declarations of array, tuple or map types with <code>{}</code>-notation; or a primitive
+type name such as <code>number</code>.</p>
+<p>Syntax such as <code>local record R</code> is a shorthand to <code>local type R = record</code>, so
+the same rules apply: it declares a new unique type.</p>
+<p>Nominal types are compared against each other <em>by name</em>, but type aliases are
+considered to be equivalent.</p>
+<pre><code class="language-lua">local record Point3D
+   x: number
+   y: number
+   z: number
+end
+
+local record Vector3D
+   x: number
+   y: number
+   z: number
+end
+
+local p: Point3D = { x = 1.0, y = 0.3, z = 2.5 }
+
+local v: Vector3D = p -- Teal compile error: Point3D is not a Vector3D
+
+local type P3D = Point3D
+
+local p2: P3D
+
+p2 = p  -- ok! P3D is a type alias type Point3D
+p = p2  -- ok! aliasing works both ways: they are effectively the same type
+</code></pre>
+<p>Nominal types are compared against non-nominal types <em>by structure</em>, so that
+you can manipulate concrete values, which have inferred types. For example,
+you can assign a plain function to a nominal function type, as long as the
+signatures are compatible, and you can assign a number literal to a nominal
+number type.</p>
+<pre><code class="language-lua">local type MyFunction = function(number): string
+
+-- f has a nominal type
+local f: MyFunction
+
+-- g is inferred a structural type: function(number): string
+local g = function(n: number): string
+   return tostring(n)
+end
+
+f = g  -- ok! structural matched against nominal
+g = f  -- ok! nominal matched against structural
+</code></pre>
+<p>You can declare structural types for functions explicitly:</p>
+<pre><code class="language-lua">local type MyFunction = function(number): string
+
+-- f has a nominal type
+local f: MyFunction
+
+-- h was explicitly given a structural function type
+local h: function(n: number): string
+
+f = h  -- ok!
+h = f  -- ok!
+</code></pre>
+<p>By design, there is no syntax in Teal for declaring structural record types.</p>
+<h2 id="some-examples"><a class="header" href="#some-examples">Some examples</a></h2>
+<p>Type aliasing only happens when declaring a new user-defined nominal type
+using an existing user-defined nominal type.</p>
+<pre><code class="language-lua">local type Record1 = record
+   x: integer
+   y: integer
+end
+
+local type Record2 = Record1
+
+local r1: Record1
+assert(r1 is Record2) -- ok!
+</code></pre>
+<p>This does not apply to primitive types. Declaring a type name with the same
+primitive type as a previous declaration is not an aliasing operation. This
+allows you to create types based on primitive types which are distinct from
+each other.</p>
+<pre><code class="language-lua">local type Temperature = number
+
+local type TemperatureAlias = Temperature
+
+local type Width = number
+
+local temp: Temperature
+
+assert(temp is TemperatureAlias)  -- ok!
+assert(temp is Width)             -- Teal compile error: temp (of type Temperature) can never be a Width
+</code></pre>
+<p>Like records, each declaration of a function type in the program source code
+represents a distinct type. The <code>function(...):...</code> syntax for type
+declaration is a type constructor.</p>
+<pre><code class="language-lua">local type Function1 = function(number): string
+
+local type Function2 = function(number): string
+
+local f1: Function1
+
+assert(f1 is Function2) -- Teal compile error: f1 (of type Function2) can never be a Function1
+</code></pre>
+<p>However, user-defined nominal names referencing those function types can be
+aliased.</p>
+<pre><code class="language-lua">local type Function1 = function(number): string
+
+local type Function3 = Function1
+
+local f1: Function1
+assert(f1 is Function3) -- ok!
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="behavior.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
-                            <a rel="next prefetch" href="about.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="type_variables.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -201,8 +311,11 @@ which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="behavior.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
-                    <a rel="next prefetch" href="about.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="type_variables.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

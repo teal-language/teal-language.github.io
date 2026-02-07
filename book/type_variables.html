@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - The Teal Programming Language</title>
+        <title>Type variable matching - The Teal Programming Language</title>
 
 
         <!-- Custom HTML head -->
@@ -174,24 +174,111 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
-<p>This book is the primary source of documentation for the Teal programming
-language.</p>
-<p>Teal is a statically-typed dialect of <a href="https://www.lua.org">Lua</a>. It extends
-Lua with type annotations, allowing you to specify arrays, maps and records,
-as well as interfaces, union types and generics.</p>
-<p>It aims to fill a niche similar to that of TypeScript in the JavaScript world,
-but adhering to Lua’s spirit of minimalism, portability and embeddability.</p>
-<p>Is it implemented as a compiler, <a href="https://github.com/teal-language/tl">tl</a>,
-which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
+                        <h1 id="type-variable-matching"><a class="header" href="#type-variable-matching">Type variable matching</a></h1>
+<p>When Teal type-checks a generic function call, it infers any type variables
+based on context. Type variables can appear in function arguments and return
+types, so these are matched with the information available at the call site:</p>
+<ul>
+<li>the place where the function call is made is used to infer
+type variables in return types;</li>
+<li>the values passed as arguments are used to infer type variables
+appearing in function arguments.</li>
+</ul>
+<p>For example, given a generic function with the following type:</p>
+<pre><code class="language-lua">local my_f: function&lt;T, U&gt;(T): U
+</code></pre>
+<p>…the following call will infer <code>T</code> to <code>boolean</code> and <code>U</code>
+to <code>string</code>.</p>
+<pre><code>local s: string = my_f(true)
+</code></pre>
+<p>Note that each type variable is inferred upon its first match, and return
+types are inferred first, then argument types. This means that if the type
+signature was instead this:</p>
+<pre><code class="language-lua">local my_f: function&lt;T&gt;(T): T
+</code></pre>
+<p>then the call above would fail with an error like <code>argument 1: got boolean, expected string</code>.</p>
+<p>Matching multiple type variables to types requires particular care when
+type variables with <code>is</code>-constraints are used multiple types. Consider
+the following example, which probably does not do what you want:</p>
+<pre><code class="language-lua">local interface Shape
+   area: number
+end
+
+local function largest_shape&lt;S is Shape&gt;(a: S, b: S): S
+   if a.area &gt; b.area then
+      return a
+   else
+      return b
+   end
+end
+</code></pre>
+<p>When attempting to use this with different kinds of shapes at the same time,
+we will get an error:</p>
+<pre><code class="language-lua">local record Circle is Shape
+end
+
+local record Square is Shape
+end
+
+local c: Circle = { area = 10 }
+local s: Square = { area = 20 }
+
+local l = largest_shape(c, s) -- error! argument 2: Square is not a Circle
+</code></pre>
+<p>The type variable <code>S</code> was matched to <code>c</code> first. We can instead do this:</p>
+<pre><code class="language-lua">local function largest_shape&lt;S is Shape, T is Shape&gt;(a: S, b: T): S | T
+   if a.area &gt; b.area then
+      return a
+   else
+      return b
+   end
+end
+</code></pre>
+<p>But then we have to make records that can be discriminated in a union,
+by giving their definitions <code>where</code> clauses. This is a possible solution:</p>
+<pre><code class="language-lua">-- we add a `name` to the interface
+local interface Shape
+   name: string
+   area: number
+end
+
+local function largest_shape&lt;S is Shape, T is Shape&gt;(a: S, b: T): S | T
+   if a.area &gt; b.area then
+      return a
+   else
+      return b
+   end
+end
+
+-- we add `where` clauses to Circle and Square
+local record Circle
+   is Shape
+   where self.name == "circle"
+end
+
+local record Square
+   is Shape
+   where self.name == "square"
+end
+
+-- we add the `name` fields so that the tables conform to their types;
+-- in larger programs this would be typically done in constructor functions
+local c: Circle = { area = 10, name = "circle" }
+local s: Square = { area = 20, name = "square" }
+
+local l = largest(c, s)
+</code></pre>
+<p>…which results in <code>l</code> having type <code>Circle | Square</code>.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="aliasing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
-                            <a rel="next prefetch" href="about.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="pragmas.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -201,8 +288,11 @@ which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="aliasing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
-                    <a rel="next prefetch" href="about.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="pragmas.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

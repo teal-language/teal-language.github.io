@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - The Teal Programming Language</title>
+        <title>Pragmas - The Teal Programming Language</title>
 
 
         <!-- Custom HTML head -->
@@ -174,24 +174,124 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
-<p>This book is the primary source of documentation for the Teal programming
-language.</p>
-<p>Teal is a statically-typed dialect of <a href="https://www.lua.org">Lua</a>. It extends
-Lua with type annotations, allowing you to specify arrays, maps and records,
-as well as interfaces, union types and generics.</p>
-<p>It aims to fill a niche similar to that of TypeScript in the JavaScript world,
-but adhering to Lua’s spirit of minimalism, portability and embeddability.</p>
-<p>Is it implemented as a compiler, <a href="https://github.com/teal-language/tl">tl</a>,
-which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
+                        <h1 id="pragmas"><a class="header" href="#pragmas">Pragmas</a></h1>
+<p>Teal is evolving as a language. Sometimes we need to add incompatible changes
+to the language, but we don’t want to break everybody’s code at once. The way
+to deal with this is by adding <em>pragmatic annotations</em> (typically known in
+compiler lingo as “pragmas”) that tell the compiler about how to interpret
+various minutiae of the language, in practice picking which “dialect” of the
+language to use. This lets the programmer pedal back on certain language
+changes and adopt them gradually as the existing codebase is converted to the
+new version.</p>
+<p>Let’s look at a concrete example where pragmas can help us: function arity
+checks.</p>
+<h2 id="function-arity-checks"><a class="header" href="#function-arity-checks">Function arity checks</a></h2>
+<p>If you’re coming from an older version of Teal, it is possible that you will
+start getting lots of errors related to numbers of arguments, such as:</p>
+<pre><code>wrong number of arguments (given 2, expects 4)
+</code></pre>
+<p>This is because, up to Teal 0.15.x, the language was lenient on the <em>arity</em> of
+function calls (the number of expressions passed as arguments in the call). It
+would just assume that any missing arguments were intended to be <code>nil</code> on
+purpose. More often than not, this is not the case, and a missing argument
+does not mean that the argument was optional, but rather that the programmer
+forgot about it (this is common when adding new arguments during a code
+refactor).</p>
+<p>Teal now features <em>optional function arguments</em>. if an argument can be
+optionally elided, you now can, or rather, have to, annotate it explicitly
+adding a <code>?</code> to its name:</p>
+<pre><code class="language-lua">local function greet(greeting: string, name?: string)
+   if name then
+      print(string.format("%s, %s!", greeting, name))
+   else
+      print(greeting .. "!")
+   end
+end
+
+greet("Hello", "Teal") --&gt; Hello, Teal!
+greet("Hello")         --&gt; Hello!
+greet() --&gt; compile error: wrong number of arguments (given 0, expects at least 1 and at most 2)
+</code></pre>
+<p>However, there are many Teal libraries out there (and Lua libraries for which
+<a href="declaration_files.html">.d.tl type declaration files</a> were written), which were
+prepared for earlier versions of Teal.</p>
+<p>The good news is that you don’t have to convert all of them at once, neither
+you have to make an all-or-nothing choice whether to have or not those
+function arity checks.</p>
+<p>You can enable or disable arity checks using the <code>arity</code> pragma. Let’s first
+assume we have an old library written for older versions of Teal:</p>
+<pre><code class="language-lua">-- old_library.tl
+local record old_library
+end
+
+-- no `?` annotations here, but `name` is an optional argument
+function old_library.greet(greeting: string, name: string)
+   if name then
+      print(string.format("%s, %s!", greeting, name))
+   else
+      print(greeting .. "!")
+   end
+end
+
+return old_library
+</code></pre>
+<p>Now we want to use this library with the current version of Teal, but we don’t
+want to lose arity checks in our own code. We can temporarily disable arity
+checks, require the library, then re-enable them:</p>
+<pre><code class="language-lua">--#pragma arity off
+local old_library = require("old_library")
+--#pragma arity on
+
+local function add(a: number, b: number): number
+   return a + b
+end
+
+print(add(1)) -- compile error: wrong number of arguments (given 1, expects 2)
+
+old_library.greet("Hello", "Teal") --&gt; Hello, Teal!
+
+-- no compile error here, because in code loaded with `arity off`,
+-- every argument is optional:
+old_library.greet("Hello")         --&gt; Hello!
+
+-- no compile error here as well,
+-- even though this call will crash at runtime:
+old_library.greet() --&gt; runtime error: attempt to concatenate a nil value (local 'greeting')
+</code></pre>
+<p>The <code>arity</code> pragma was introduced as a way to gradually convert codebases, as
+opposed to the wholesale approach of passing <code>--feat-arity=off</code> to the
+compiler command-line or setting <code>feat_arity = "off"</code> in <code>tlconfig.lua</code>, the
+<a href="compiler_options.html">compiler options</a> file.</p>
+<h3 id="optional-arities-versus-optional-values"><a class="header" href="#optional-arities-versus-optional-values">Optional arities versus optional values</a></h3>
+<p>Note that arity checks are about the number of <em>expressions</em> used as arguments
+in function calls: it does not check whether the <em>values</em> are <code>nil</code> or not.
+In the above example, even with arity check enabled, you could still write
+<code>greet(nil, nil)</code> and that would be accepted by the compiler as valid,
+even though it would crash at runtime.</p>
+<p>Explicit checking for <code>nil</code> is a separate feature, which may be added in a
+future version of Teal. When that happens, we will definitely need a <code>pragma</code>
+to allow for gradual adoption of it!</p>
+<h2 id="what-pragmas-are-not"><a class="header" href="#what-pragmas-are-not">What pragmas are not</a></h2>
+<p>One final word about pragmas: there is no well-established definition for a
+“compiler pragma” in the literature, even though this is a common term.</p>
+<p>It’s important to clarify here that Teal pragmas are not intended as
+general-purpose annotations (the kind of things you usually see with <code>@-</code>
+syntax in various other languages such as C#, Java or <code>#[]</code> in Rust). Pragmas
+here are intended as compiler directives, more akin to compiler flags (e.g.
+the <code>#pragma</code> use in C compilers).</p>
+<p>In short, our practical goal for pragmas is to allow for handling
+compatibility issues when dealing with the language evolution. That is, in a
+Teal codebase with no legacy concerns, there should be no pragmas.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="type_variables.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
-                            <a rel="next prefetch" href="about.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="current_limitations_on_union_types.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -201,8 +301,11 @@ which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="type_variables.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
-                    <a rel="next prefetch" href="about.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="current_limitations_on_union_types.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

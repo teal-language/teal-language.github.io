@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - The Teal Programming Language</title>
+        <title>The Grammar of Teal - The Teal Programming Language</title>
 
 
         <!-- Custom HTML head -->
@@ -174,24 +174,168 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
-<p>This book is the primary source of documentation for the Teal programming
-language.</p>
-<p>Teal is a statically-typed dialect of <a href="https://www.lua.org">Lua</a>. It extends
-Lua with type annotations, allowing you to specify arrays, maps and records,
-as well as interfaces, union types and generics.</p>
-<p>It aims to fill a niche similar to that of TypeScript in the JavaScript world,
-but adhering to Lua’s spirit of minimalism, portability and embeddability.</p>
-<p>Is it implemented as a compiler, <a href="https://github.com/teal-language/tl">tl</a>,
-which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
+                        <h1 id="the-grammar-of-teal"><a class="header" href="#the-grammar-of-teal">The Grammar of Teal</a></h1>
+<p>Here is the complete syntax of Teal in extended BNF, based on the Lua 5.4
+grammar. Lines starting with <code>+</code> are existing lines from the Lua grammar
+with additions; lines marked with <code>*</code> are entirely new.</p>
+<p>As usual in extended BNF, <code>{A}</code> means 0 or more <code>A</code>s, and <code>[A]</code> means an
+optional <code>A</code>. For a description of the terminals Name, Numeral, and
+LiteralString, see <a href="https://www.lua.org/manual/5.3/manual.html#3.1">Section 3.1 of the Lua 5.3 Reference
+Manual</a>. For operator
+precedence, see below.</p>
+<pre><code>   chunk ::= block
+
+   block ::= {stat} [retstat]
+
+   stat ::=  ‘;’ |
+       varlist ‘=’ explist |
+       functioncall |
+       label |
+       ‘break’ |
+       ‘goto’ Name |
+       ‘do’ block ‘end’ |
+       ‘while’ exp ‘do’ block ‘end’ |
+       ‘repeat’ block ‘until’ exp |
+       ‘if’ exp ‘then’ block {‘elseif’ exp ‘then’ block} [‘else’ block] ‘end’ |
+       ‘for’ Name ‘=’ exp ‘,’ exp [‘,’ exp] ‘do’ block ‘end’ |
+       ‘for’ namelist ‘in’ explist ‘do’ block ‘end’ |
+       ‘function’ funcname funcbody |
++      ‘local’ attnamelist [‘:’ typelist] [‘=’ explist] |
+       ‘local’ ‘function’ Name funcbody |
+*      ‘local’ ‘record’ Name recordbody |
+*      ‘local’ ‘interface’ Name recordbody |
+*      ‘local’ ‘enum’ Name enumbody |
+*      ‘local’ ‘type’ Name ‘=’ newtype |
+*      ‘global’ attnamelist ‘:’ typelist [‘=’ explist] |
+*      ‘global’ attnamelist ‘=’ explist |
+*      ‘global’ ‘function’ Name funcbody |
+*      ‘global’ ‘record’ Name recordbody |
+*      ‘global’ ‘interface’ Name recordbody |
+*      ‘global’ ‘enum’ Name enumbody |
+*      ‘global’ ‘type’ Name [‘=’ newtype]
+
+   attnamelist ::=  Name [attrib] {‘,’ Name [attrib]}
+
+   attrib ::= ‘&lt;’ Name ‘&gt;’
+
+   retstat ::= ‘return’ [explist] [‘;’]
+
+   label ::= ‘::’ Name ‘::’
+
++  funcname ::= Name {‘.’ Name} ‘:’ Name | Name {‘.’ Name} ‘.’ Name
+
+   varlist ::= var {‘,’ var}
+
+   var ::=  Name | prefixexp ‘[’ exp ‘]’ | prefixexp ‘.’ Name
+
+   namelist ::= Name {‘,’ Name}
+
+   explist ::= exp {‘,’ exp}
+
+   exp ::=  ‘nil’ | ‘false’ | ‘true’ | Numeral | LiteralString | ‘...’ | functiondef |
+       prefixexp | tableconstructor | exp binop exp | unop exp |
+*      exp ‘as’ type | exp ‘as’ ‘(’ typelist ‘)’ | Name ‘is’ type
+
+   prefixexp ::= var | functioncall | ‘(’ exp ‘)’
+
+   functioncall ::=  prefixexp args | prefixexp ‘:’ Name args
+
+   args ::=  ‘(’ [explist] ‘)’ | tableconstructor | LiteralString
+
+   functiondef ::= ‘function’ funcbody
+
++  funcbody ::= [typeargs] ‘(’ [parlist] ‘)’ [‘:’ retlist] block ‘end’
+
++  parlist ::= parnamelist [‘,’ ‘...’ [‘:’ type]] | ‘...’ [‘:’ type]
+
+   tableconstructor ::= ‘{’ [fieldlist] ‘}’
+
+   fieldlist ::= field {fieldsep field} [fieldsep]
+
+   field ::= ‘[’ exp ‘]’ ‘=’ exp |
++      Name [‘:’ type] ‘=’ exp |
+       exp
+
+   fieldsep ::= ‘,’ | ‘;’
+
+   binop ::=  ‘+’ | ‘-’ | ‘*’ | ‘/’ | ‘//’ | ‘^’ | ‘%’ |
+       ‘&amp;’ | ‘~’ | ‘|’ | ‘&gt;&gt;’ | ‘&lt;&lt;’ | ‘..’ |
+       ‘&lt;’ | ‘&lt;=’ | ‘&gt;’ | ‘&gt;=’ | ‘==’ | ‘~=’ |
+       ‘and’ | ‘or’
+
+   unop ::= ‘-’ | ‘not’ | ‘#’ | ‘~’
+
+*  type ::= ‘(’ type ‘)’ | basetype {‘|’ basetype}
+
+*  nominal ::= Name {{‘.’ Name }} [typeargs]
+
+*  basetype ::= ‘string’ | ‘boolean’ | ‘nil’ | ‘number’ |
+*      ‘{’ type {',' type} ‘}’ | ‘{’ type ‘:’ type ‘}’ | functiontype
+*      | nominal
+
+*  typelist ::= type {‘,’ type}
+
+*  retlist ::= ‘(’ [typelist] [‘...’] ‘)’ | typelist [‘...’]
+
+*  typeargs ::= ‘&lt;’ Name {‘,’ Name } ‘&gt;’
+
+*  newtype ::= ‘record’ recordbody | ‘enum’ enumbody | type
+*      | ‘require’ ‘(’ LiteralString ‘)’ {‘.’ Name }
+
+*  interfacelist ::= nominal {‘,’ nominal} |
+*      ‘{’ type ‘}’ {‘,’ nominal}
+
+*  recordbody ::= [typeargs] [‘is’ interfacelist]
+*      [‘where’ exp] {recordentry} ‘end’
+
+*  recordentry ::= ‘userdata’ |
+*      ‘type’ Name ‘=’ newtype | [‘metamethod’] recordkey ‘:’ type |
+*      ‘record’ Name recordbody | ‘enum’ Name enumbody
+
+*  recordkey ::= Name | ‘[’ LiteralString ‘]’
+
+*  enumbody ::= {LiteralString} ‘end’
+
+*  functiontype ::= ‘function’ [typeargs] ‘(’ partypelist ‘)’ [‘:’ retlist]
+
+*  partypelist ::= partype {‘,’ partype}
+
+*  partype ::= Name [‘?’] ‘:’ type | [‘?’] type
+
+*  parnamelist ::= parname {‘,’ parname}
+
+*  parname ::= Name [‘?’] [‘:’ type]
+</code></pre>
+<h2 id="operator-precedence"><a class="header" href="#operator-precedence">Operator precedence</a></h2>
+<p>Operator precedence in Teal follows the table below, from lower to higher priority:</p>
+<pre><code>     or
+     and
+     is
+     &lt;     &gt;     &lt;=    &gt;=    ~=    ==
+     |
+     ~
+     &amp;
+     &lt;&lt;    &gt;&gt;
+     ..
+     +     -
+     *     /     //    %
+     unary operators (not   #     -     ~)
+     ^
+     as
+</code></pre>
+<p>As usual, you can use parentheses to change the precedences of an expression.
+The concatenation (<code>..</code>) and exponentiation (<code>^</code>) operators are right
+associative. All other binary operators are left associative.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="developing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
-                            <a rel="next prefetch" href="about.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="other_projects.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -201,8 +345,11 @@ which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="developing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
-                    <a rel="next prefetch" href="about.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="other_projects.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

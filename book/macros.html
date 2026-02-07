@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - The Teal Programming Language</title>
+        <title>Macros - The Teal Programming Language</title>
 
 
         <!-- Custom HTML head -->
@@ -174,24 +174,502 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
-<p>This book is the primary source of documentation for the Teal programming
-language.</p>
-<p>Teal is a statically-typed dialect of <a href="https://www.lua.org">Lua</a>. It extends
-Lua with type annotations, allowing you to specify arrays, maps and records,
-as well as interfaces, union types and generics.</p>
-<p>It aims to fill a niche similar to that of TypeScript in the JavaScript world,
-but adhering to Lua’s spirit of minimalism, portability and embeddability.</p>
-<p>Is it implemented as a compiler, <a href="https://github.com/teal-language/tl">tl</a>,
-which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
+                        <h1 id="macros"><a class="header" href="#macros">Macros</a></h1>
+<p>Teal macros are compile-time code generators. They let you write Lua code that
+constructs and returns AST blocks, which are then spliced into your program
+before type checking and code generation. Macros are a separate feature from
+macro expressions (see <a href="./macroexp.html">Macro expressions</a>).</p>
+<p>Macros are <strong>local</strong> and <strong>compile-time only</strong>: their declarations are removed
+after expansion and produce no Lua code at runtime.</p>
+<h2 id="declaring-a-macro"><a class="header" href="#declaring-a-macro">Declaring a macro</a></h2>
+<p>A macro is declared with <code>local macro</code>, a name ending in <code>!</code>, and a function
+body:</p>
+<pre><code class="language-lua">local macro inc!(x: Expression)
+   return `$x + 1`
+end
+
+local y = inc!(2)
+</code></pre>
+<p>Here, <code>inc!</code> receives an expression AST and returns a new expression AST built
+from a quote.</p>
+<h2 id="invoking-a-macro"><a class="header" href="#invoking-a-macro">Invoking a macro</a></h2>
+<p>A macro call uses the <code>!</code> postfix operator and accepts the same argument forms
+as function calls:</p>
+<pre><code class="language-lua">foo!(a, b)
+foo!"string"
+foo!{ key = "value" }
+</code></pre>
+<p>Macros can appear in expression or statement positions, as long as the macro
+returns a compatible kind of block.</p>
+<h2 id="macro-arguments"><a class="header" href="#macro-arguments">Macro arguments</a></h2>
+<p>Macro parameters must be annotated as one of:</p>
+<ul>
+<li><code>Expression</code></li>
+<li><code>Statement</code></li>
+<li><code>...: Expression</code> (vararg)</li>
+<li><code>...: Statement</code> (vararg)</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-lua">local macro wrap!(s: Statement, e: Expression)
+   local out = block("statements")
+   table.insert(out, s)
+   table.insert(out, `print($e)`)
+   return out
+end
+
+wrap!(do
+   local x = 1
+end, "ok")
+</code></pre>
+<p><code>Statement</code> arguments are passed as a <code>statements</code> block, which can contain one
+or more statements.</p>
+<p>Macro arguments are <strong>AST blocks</strong>, not runtime values. Macros transform the
+syntax tree and return new blocks to be spliced into the program.</p>
+<h2 id="quoting-and-splicing"><a class="header" href="#quoting-and-splicing">Quoting and splicing</a></h2>
+<p>Macros usually construct AST blocks by quoting Teal syntax:</p>
+<ul>
+<li><strong>Single backticks</strong> quote an expression: <code>`a + 1`</code></li>
+<li><strong>Triple backticks</strong> quote statements: use three backticks (<code>```</code>)</li>
+</ul>
+<p>Inside a macro quote, <code>$name</code> splices the macro argument named <code>name</code>:</p>
+<pre><code class="language-lua">local macro twice!(x: Expression)
+   return `$x + $x`
+end
+</code></pre>
+<p>For statement quotes, you can splice a <code>Statement</code> argument by putting <code>$name</code>
+on its own line (optional semicolon):</p>
+<pre><code class="language-lua">local macro insert!(s: Statement)
+   return ```
+      $s
+      print("after")
+   ```
+end
+</code></pre>
+<h2 id="building-ast-blocks-directly"><a class="header" href="#building-ast-blocks-directly">Building AST blocks directly</a></h2>
+<p>The macro sandbox provides helpers for manual AST construction:</p>
+<ul>
+<li><code>block(kind)</code> creates a block of a given kind</li>
+<li><code>BLOCK_INDEXES</code> gives numeric indices for block fields</li>
+<li><code>clone(b)</code> makes a deep copy of a block</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-lua">local macro make_local!(name: Expression, value: Expression)
+   local BI = BLOCK_INDEXES
+   local decl = block("local_declaration")
+   decl[BI.LOCAL_DECLARATION.VARS] = block("variable_list")
+   decl[BI.LOCAL_DECLARATION.VARS][BI.VARIABLE_LIST.FIRST] = name
+   decl[BI.LOCAL_DECLARATION.EXPS] = block("expression_list")
+   decl[BI.LOCAL_DECLARATION.EXPS][BI.EXPRESSION_LIST.FIRST] = value
+   return decl
+end
+</code></pre>
+<p>which is the equivalent to</p>
+<pre><code class="language-lua">local macro make_local!(name: Expression, value: Expression)
+   local decl = ```
+      local $name = $value
+   ```
+   return decl
+end
+</code></pre>
+<h2 id="putting-it-all-together-writing-a-pipe-macro"><a class="header" href="#putting-it-all-together-writing-a-pipe-macro">Putting it all together, writing a pipe! macro</a></h2>
+<p>Using all these tools given to us by the macro system, we can write a simple <code>pipe!</code> macro that takes in an expression like</p>
+<pre><code class="language-lua">x | f | g(y)
+</code></pre>
+<p>and produces</p>
+<pre><code class="language-lua">g(f(x), y)
+</code></pre>
+<p>First, we declare the macro with the appropriate argument type:</p>
+<pre><code class="language-lua">local macro pipe!(pipe_expr: Expression)
+
+end
+</code></pre>
+<p>now we want to make sure we are taking in an <code>op_bor</code> (<code>|</code>). We can do this using <code>expect</code></p>
+<pre><code class="language-lua">local macro pipe!(pipe_expr: Expression)
+   expect(pipe_expr, "op_bor")
+end
+</code></pre>
+<p>Now we want to be extracting all of the “calls” that are being piped together. We do this by traversing the <code>op_bor</code> nodes until we reach the last expression.</p>
+<pre><code class="language-lua">local macro pipe!(pipe_expr: Expression)
+   expect(pipe_expr, "op_bor")
+   local BI = BLOCK_INDEXES
+
+   local calls = {}
+   local function append_call(expr)
+      if expr.kind == "op_bor" then
+         -- see below for the indexes
+         -- because op_bor is a binary operator,
+         -- we are going to use E1 and E2 to get the left and right expressions
+         append_call(expr[BI.OP.E1])
+         append_call(expr[BI.OP.E2])
+      else
+         -- this will be a block of a variable (f) or a func call (g(y))
+         table.insert(calls, expr)
+      end
+      return nil
+   end
+   append_call(pipe_expr)
+end
+</code></pre>
+<p>Now that we have the calls in order, we need to build the nested function calls. For our macro, we also want to make it so any variables on their own (for example, just <code>f</code> in <code>x | f</code>) are treated as function calls with no arguments (<code>f()</code>).</p>
+<pre><code class="language-lua">local macro pipe!(pipe_expr: Expression)
+   expect(pipe_expr, "op_bor")
+   local BI = BLOCK_INDEXES
+
+   local calls = {}
+   local function append_call(expr)
+      if expr.kind == "op_bor" then
+         -- see below for the indexes
+         -- because op_bor is a binary operator,
+         -- we are going to use E1 and E2 to get the left and right expressions
+         append_call(expr[BI.OP.E1])
+         append_call(expr[BI.OP.E2])
+      else
+         -- this will be a block of a variable (f) or a func call (g(y))
+         table.insert(calls, expr)
+      end
+      return nil
+   end
+   append_call(pipe_expr)
+
+   -- this is what we are gonna keep updating
+   local invocation = calls[1]
+   for i = 2, #calls do
+      local call = calls[i]
+      if call.kind ~= "op_funcall" then
+         -- this is the case where we have a variable (f)
+         -- we just need to give it an expression list to store its parameters
+         call = `($call)()`
+      end
+
+      -- this is the parametres of the call itself
+      local exprlist = call[BI.OP.E2]
+      --we need a clone so we can mutate safely
+      local newexprlist = clone(exprlist)
+      -- adding in the previous invocation as the first parameter
+      -- so `x | f` becomes `f(x)` and `x | f | g(y)` becomes `g(f(x), y)`
+      table.insert(newexprlist, 1, invocation)
+      invocation = clone(call)
+      -- assigning the new parameter list back to our new call
+      invocation[BI.OP.E2] = newexprlist
+   end
+
+   -- good job! we did it!
+   return invocation
+end
+</code></pre>
+<p>And we can test it out:</p>
+<pre><code class="language-lua">local function add(x: integer, y: integer): integer
+    return x + y
+end
+
+local function double(x: integer): integer
+    return x * 2
+end
+
+local z = pipe!(3 | add(4) | double)
+
+print(z) -- prints 14
+</code></pre>
+<h2 id="by-design-limitations"><a class="header" href="#by-design-limitations">By-design limitations</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Detail</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td>Local only</td><td>Macros must be declared with <code>local macro</code> and are scoped to a single file. They cannot be exported or imported.</td></tr>
+<tr><td>Compile-time only</td><td>Macros run before type checking, and their declarations produce no runtime code.</td></tr>
+<tr><td>Restricted environment</td><td>Macro bodies run in a sandbox with a limited standard library (no <code>require</code>, file I/O, or OS access beyond basic timing functions).</td></tr>
+<tr><td>Argument types are fixed</td><td>Every parameter must be annotated as <code>Statement</code> or <code>Expression</code> (varargs allowed). Other annotations are errors.</td></tr>
+<tr><td>Quotes are only valid inside macros</td><td>Backtick quotes and <code>$name</code> splices are rejected outside <code>local macro</code> bodies.</td></tr>
+<tr><td>No nested macro invocations</td><td>You cannot use <code>other!()</code> inside a macro body to expand another macro; build the block directly or with quotes.</td></tr>
+<tr><td>Statement args with top-level commas need a wrapper</td><td>When passing a statement argument like <code>local a, b = 1, 2</code>, wrap it in <code>do ... end</code> to avoid parsing ambiguity.</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="block-kinds"><a class="header" href="#block-kinds">Block kinds</a></h2>
+<p>All block kinds that can be returned from macros are listed below (from
+<code>teal/block.tl</code>):</p>
+<pre><code>nil
+string
+number
+integer
+boolean
+literal_table
+literal_table_item
+function
+expression_list
+if
+if_block
+while
+fornum
+forin
+goto
+label
+repeat
+do
+break
+return
+newtype
+argument
+type_identifier
+variable
+variable_list
+statements
+assignment
+argument_list
+local_function
+global_function
+local_type
+global_type
+record_function
+local_declaration
+global_declaration
+identifier
+cast
+...
+:
+;
+comment
+hashbang
+paren
+macroexp
+local_macroexp
+local_macro
+macro_quote
+macro_var
+macro_invocation
+interface
+pragma
+error_block
+userdata
+op_not
+op_len
+op_unm
+op_bnot
+op_or
+op_and
+op_is
+op_lt
+op_gt
+op_le
+op_ge
+op_ne
+op_eq
+op_bor
+op_bxor
+op_band
+op_shl
+op_shr
+op_concat
+op_add
+op_sub
+op_mul
+op_div
+op_idiv
+op_mod
+op_pow
+op_as
+op_funcall
+op_index
+op_dot
+op_colon
+typeargs
+typelist
+generic_type
+typedecl
+tuple_type
+nominal_type
+map_type
+array_type
+union_type
+argument_type
+interface_list
+record_body
+record_field
+question
+</code></pre>
+<h2 id="block_indexes-reference"><a class="header" href="#block_indexes-reference">BLOCK_INDEXES reference</a></h2>
+<p><code>BLOCK_INDEXES</code> maps block kinds to the numeric slots used by their children.
+This is the full table used by the macro API (from <code>teal/block.tl</code>):</p>
+<pre><code class="language-lua">TYPELIST.FIRST
+
+MACROEXP.RETS
+MACROEXP.ARGS
+MACROEXP.EXP
+
+GLOBAL_TYPE.VALUE
+GLOBAL_TYPE.VAR
+
+ASSIGNMENT.VARS
+ASSIGNMENT.EXPS
+
+MACRO_INVOCATION.ARGS
+MACRO_INVOCATION.MACRO
+
+UNION_TYPE.FIRST
+
+PAREN.EXP
+
+DO.BODY
+
+EXPRESSION_LIST.FIRST
+EXPRESSION_LIST.SECOND
+
+FUNCTION.BODY
+FUNCTION.RETS
+FUNCTION.TYPEARGS
+FUNCTION.ARGS
+
+LOCAL_MACROEXP.NAME
+LOCAL_MACROEXP.EXP
+
+TYPEARGS.FIRST
+
+LOCAL_TYPE.VALUE
+LOCAL_TYPE.VAR
+
+MACRO_VAR.NAME
+
+VARIABLE_LIST.FIRST
+
+GLOBAL_DECLARATION.EXPS
+GLOBAL_DECLARATION.VARS
+GLOBAL_DECLARATION.DECL
+
+RECORD.FIELDS
+RECORD.META_FIELDS
+RECORD.ARRAY_TYPE
+RECORD.WHERE_CLAUSE
+RECORD.INTERFACES
+
+RECORD_FUNCTION.ARGS
+RECORD_FUNCTION.BODY
+RECORD_FUNCTION.RETS
+RECORD_FUNCTION.TYPEARGS
+RECORD_FUNCTION.NAME
+RECORD_FUNCTION.OWNER
+
+INTERFACE_LIST.FIRST
+
+RETURN.EXPS
+
+MAP_TYPE.KEYS
+MAP_TYPE.VALUES
+
+OP.E1
+OP.E2
+
+ARRAY_TYPE.ELEMENT
+
+IF.BLOCKS
+
+TUPLE_TYPE.FIRST
+TUPLE_TYPE.SECOND
+
+NOMINAL_TYPE.NAME
+
+NEWTYPE.TYPEDECL
+
+GENERIC_TYPE.TYPEARGS
+GENERIC_TYPE.BASE
+
+TYPEARG.NAME
+TYPEARG.CONSTRAINT
+
+ARGUMENT_TYPE.NAME
+
+TYPEDECL.TYPE
+
+PRAGMA.KEY
+PRAGMA.VALUE
+
+WHILE.BODY
+WHILE.COND
+
+RECORD_FIELD.DEFAULT_VAL
+RECORD_FIELD.VAL
+RECORD_FIELD.TYPE
+RECORD_FIELD.NAME
+RECORD_FIELD.METHOD
+
+ARGUMENT_LIST.FIRST
+
+RECORD_BODY.META_FIELDS
+RECORD_BODY.FIELDS
+
+MACRO_QUOTE.BLOCK
+
+INTERFACE.FIELDS
+INTERFACE.INTERFACES
+INTERFACE.ARRAY_TYPE
+
+CAST.TYPE
+
+LITERAL_TABLE_ITEM.VALUE
+LITERAL_TABLE_ITEM.KEY
+LITERAL_TABLE_ITEM.TYPED_VALUE
+
+FUNCTION_TYPE.MACROEXP
+FUNCTION_TYPE.ARGS
+FUNCTION_TYPE.RETS
+
+LOCAL_DECLARATION.EXPS
+LOCAL_DECLARATION.VARS
+LOCAL_DECLARATION.DECL
+
+LOCAL_FUNCTION.RETS
+LOCAL_FUNCTION.BODY
+LOCAL_FUNCTION.TYPEARGS
+LOCAL_FUNCTION.NAME
+LOCAL_FUNCTION.ARGS
+
+FORIN.EXPS
+FORIN.VARS
+FORIN.BODY
+
+GOTO.LABEL
+
+GLOBAL_FUNCTION.RETS
+GLOBAL_FUNCTION.BODY
+GLOBAL_FUNCTION.TYPEARGS
+GLOBAL_FUNCTION.NAME
+GLOBAL_FUNCTION.ARGS
+
+VARIABLE.ANNOTATION
+
+REPEAT.BODY
+REPEAT.COND
+
+LABEL.NAME
+
+IF_BLOCK.BODY
+IF_BLOCK.COND
+
+LOCAL_MACRO.RETS
+LOCAL_MACRO.BODY
+LOCAL_MACRO.TYPEARGS
+LOCAL_MACRO.NAME
+LOCAL_MACRO.ARGS
+
+FORNUM.TO
+FORNUM.VAR
+FORNUM.FROM
+FORNUM.BODY
+FORNUM.STEP
+
+ARGUMENT.ANNOTATION
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="macroexp.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
-                            <a rel="next prefetch" href="about.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="behavior.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -201,8 +679,11 @@ which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="macroexp.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
-                    <a rel="next prefetch" href="about.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="behavior.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

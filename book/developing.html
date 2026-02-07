@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - The Teal Programming Language</title>
+        <title>Hacking on tl itself - The Teal Programming Language</title>
 
 
         <!-- Custom HTML head -->
@@ -174,24 +174,72 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
-<p>This book is the primary source of documentation for the Teal programming
-language.</p>
-<p>Teal is a statically-typed dialect of <a href="https://www.lua.org">Lua</a>. It extends
-Lua with type annotations, allowing you to specify arrays, maps and records,
-as well as interfaces, union types and generics.</p>
-<p>It aims to fill a niche similar to that of TypeScript in the JavaScript world,
-but adhering to Lua’s spirit of minimalism, portability and embeddability.</p>
-<p>Is it implemented as a compiler, <a href="https://github.com/teal-language/tl">tl</a>,
-which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
+                        <h1 id="hacking-on-tl-itself"><a class="header" href="#hacking-on-tl-itself">Hacking on tl itself</a></h1>
+<p>As correctly pointed out in <a href="https://github.com/teal-language/tl/issues/51">#51</a>:</p>
+<blockquote>
+<p>Creating and testing edits to <code>tl.tl</code> can feel a bit awkward because
+changing <code>tl</code> itself requires bootstrapping from a “working” version
+of <code>tl</code>.</p>
+</blockquote>
+<h2 id="keeping-tl-working"><a class="header" href="#keeping-tl-working">Keeping tl working</a></h2>
+<p>Because of this situation, the tl repository provides a Makefile that
+conveniently runs a build and test while making sure that <code>tl.lua</code>, which
+is the file that ultimately drives the currently-running compiler, keeps
+working.</p>
+<p>So, when working on <code>tl.tl</code>, instead of running <code>tl gen tl.tl</code>, run <code>make</code>.
+This will run <code>tl gen tl.tl</code>, but it will also make a backup of <code>tl.lua</code>
+first, and it will check that the new modified version can still build itself.
+If anything goes wrong, it reverts <code>tl.lua</code> to the backup and your compiler
+still works. If the modified compiler is able to rebuild itself, then
+it will run the Busted test suite. If the Busted test suite fails, it will
+<em>not</em> revert <code>tl.lua</code>, but leave you with the buggy compiler (i.e. a <code>tl.lua</code>
+that matches the behavior of your current version of <code>tl.tl</code>).</p>
+<p>If you want to revert only the generated code back to the last committed
+state in Git but keep your changes to <code>tl.tl</code> around, you can run
+<code>git checkout tl.lua</code>.</p>
+<h2 id="avoid-circular-dependencies"><a class="header" href="#avoid-circular-dependencies">Avoid circular dependencies</a></h2>
+<p>When dealing with a bootstrapped project (a project that uses itself to run),
+one has to always be careful to not make the code itself depend on a new
+feature when implementing it, otherwise you get into a chicken-and-egg
+situation.</p>
+<p>For example, when generics were added, the code to support them had to be
+written using non-generic types, resorting to <code>any</code> and ugly casts. Once
+the tests for generics were passing, then the code of <code>tl.tl</code> itself was
+modified to use it.</p>
+<p>If you find yourself in a circular-dependency situation like this (sometimes
+it’s a bug you need fixed in the compiler and the compiler needs the bug
+fixed to run correctly), the last-resort alternative is to copy the fix
+manually to <code>tl.lua</code>, stripping out the types in your new code by hand,
+then running both (you may want to save your changes in a backup commit
+before trying it, as you might accidentally overwrite your manual changes!).
+Again, this manual editing of <code>tl.lua</code> shouldn’t generally be necessary
+if you take care to not depend on work-in-progress features.</p>
+<h2 id="sending-code-contributions"><a class="header" href="#sending-code-contributions">Sending code contributions</a></h2>
+<p>When submitting a pull request, make sure you include in your commits both the
+changes to <code>tl.tl</code> and <code>tl.lua</code>. They should match of course (the <code>tl.lua</code>
+should be the product of compiling <code>tl.tl</code>). In general, Git repositories do
+not contain generated files, but we keep both in the repository precisely to
+avoid the chicken-and-egg bootstrapping situation (if we didn’t, one would
+have to have a previous <code>tl</code> installation already in order to run <code>tl</code> from a
+Git repo clone).</p>
+<p>When sending a PR that adds a new feature or fixes a bug, please add one or more
+relevant tests to the Busted test suite under <code>spec/</code>. Adding tests is important
+to demonstrate that the PR works and help future maintenance of the project,
+as it will check automatically that the change introduced in the PR will keep
+working in the future as other changes are made to the project. For bug fixes,
+the ideal test is a regression test: a test that would fail when running with
+the unmodified version of the compiler, but passes when running the corrected
+compiler.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="compiler_options.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
-                            <a rel="next prefetch" href="about.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="grammar.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -201,8 +249,11 @@ which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="compiler_options.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
-                    <a rel="next prefetch" href="about.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="grammar.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

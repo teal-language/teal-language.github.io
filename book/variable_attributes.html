@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - The Teal Programming Language</title>
+        <title>Variable attributes - The Teal Programming Language</title>
 
 
         <!-- Custom HTML head -->
@@ -174,24 +174,105 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
-<p>This book is the primary source of documentation for the Teal programming
-language.</p>
-<p>Teal is a statically-typed dialect of <a href="https://www.lua.org">Lua</a>. It extends
-Lua with type annotations, allowing you to specify arrays, maps and records,
-as well as interfaces, union types and generics.</p>
-<p>It aims to fill a niche similar to that of TypeScript in the JavaScript world,
-but adhering to Lua’s spirit of minimalism, portability and embeddability.</p>
-<p>Is it implemented as a compiler, <a href="https://github.com/teal-language/tl">tl</a>,
-which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
+                        <h2 id="variable-attributes"><a class="header" href="#variable-attributes">Variable attributes</a></h2>
+<p>Teal supports variable annotations, with similar syntax and behavior to those
+from Lua 5.4. They are:</p>
+<h3 id="const-variables"><a class="header" href="#const-variables">Const variables</a></h3>
+<p>The <code>&lt;const&gt;</code> annotation works in Teal like it does in Lua 5.4 (it works at
+compile time, even if you’re running a different version of Lua). Do note
+however that this is annotation for variables, and not values: the contents of a
+value set to a const variable are not constant.</p>
+<pre><code class="language-lua">local xs &lt;const&gt; = {1,2,3}
+xs[1] = 999 -- ok! the array is not frozen
+xs = {} -- Error! can't replace the array in variable xs
+</code></pre>
+<h3 id="to-be-closed-variables"><a class="header" href="#to-be-closed-variables">To-be-closed variables</a></h3>
+<p>The <code>&lt;close&gt;</code> annotation from Lua 5.4 is only supported in Teal if your code
+generation target is Lua 5.4 (see the <a href="compiler_options.html">compiler options</a>
+documentation for details on code generation targets). These work just
+<a href="https://www.lua.org/manual/5.4/manual.html#3.3.8">like they do in Lua 5.4</a>.</p>
+<pre><code class="language-lua">local contents = {}
+for _, name in ipairs(filenames) do
+   local f &lt;close&gt; = assert(io.open(name, "r"))
+   contents[name] = f:read("*a")
+   -- no need to call f:close() because files have a __close metamethod
+end
+</code></pre>
+<h3 id="total-variables"><a class="header" href="#total-variables">Total variables</a></h3>
+<p>The <code>&lt;total&gt;</code> annotation is specific to Teal. It declares a const variable
+assigned to a table value in which all possible keys need to be explicitly
+declared. Note that you can only use <code>&lt;total&gt;</code> when assigning to a literal
+table value, that is, when you are spelling out a table using a <code>{}</code> block.</p>
+<p>Of course, not all types allow you to enumerate all possible keys: there is an
+infinite number (well, not infinite because we’re talking about computers, but
+an impractically large number!) of possible strings and numbers, so maps keyed
+by these types can’t ever be total. Examples of valid key types for a total map
+are booleans (for which there are only two possible values) and, most usefully,
+enums.</p>
+<p>Enums are the prime case for total variables: it is common to declare a number
+of cases in an enum and then to have a map of values that handle each of these
+cases. By declaring that map <code>&lt;total&gt;</code> you can be sure that you won’t forget to
+add handlers for the new cases as you add new entries to the enum.</p>
+<pre><code class="language-lua">local degrees &lt;total&gt;: {Direction:number} = {
+   ["north"] = 0,
+   ["west"] = 90,
+   ["south"] = 180,
+   ["east"] = 270,
+}
+
+-- if you later update the `Direction` enum to add new directions
+-- such as "northeast" and "southwest", the above declaration of
+-- `degrees` will issue a compile-time error, because the table
+-- above is no longer total!
+</code></pre>
+<p>Another example of types that have a finite set of valid keys are records. By
+marking a record variable as <code>&lt;total&gt;</code>, you make it so it becomes mandatory to
+declare all its fields in the given initialization table.</p>
+<pre><code class="language-lua">local record Color
+   red: integer
+   green: integer
+   blue: integer
+end
+
+local teal_color &lt;total&gt;: Color = {
+   red = 0,
+   green = 128,
+   blue = 128,
+}
+
+-- if you later update the `Color` record to add a new component
+-- such as `alpha`, the above declaration of `teal_color`
+-- will issue a compile-time error, because the table above
+-- is no longer total!
+</code></pre>
+<p>Note however that the totality check refers only to the presence of explicit
+declarations: it will still accept an assignment to <code>nil</code> as a valid
+declaration. The rationale is that an explicit <code>nil</code> entry means that the
+programmer did consider that case, and chose to keep it empty. Therefore,
+something like this works:</p>
+<pre><code class="language-lua">local vertical_only &lt;total&gt;: {Direction:MotionCallback} = {
+   ["north"] = move_up,
+   ["west"] = nil,
+   ["south"] = move_down,
+   ["east"] = nil,
+}
+
+-- This declaration is fine: the map is still total, as we are
+-- explicitly mentioning which cases are left empty in it.
+</code></pre>
+<p><em>(Side note: the name “total” comes from the concept of a “total relation” in
+mathematics, which is a relation where, given a set of “keys” mapping to a set
+of “values”, the keys fully cover the domain of their type).</em></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="global_variables.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
-                            <a rel="next prefetch" href="about.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="metamethods.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -201,8 +282,11 @@ which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="global_variables.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
-                    <a rel="next prefetch" href="about.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="metamethods.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

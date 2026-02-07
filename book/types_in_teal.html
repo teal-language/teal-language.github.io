@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - The Teal Programming Language</title>
+        <title>Types in Teal - The Teal Programming Language</title>
 
 
         <!-- Custom HTML head -->
@@ -174,24 +174,91 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<h2 id="welcome-to-teal"><a class="header" href="#welcome-to-teal">Welcome to Teal!</a></h2>
-<p>This book is the primary source of documentation for the Teal programming
-language.</p>
-<p>Teal is a statically-typed dialect of <a href="https://www.lua.org">Lua</a>. It extends
-Lua with type annotations, allowing you to specify arrays, maps and records,
-as well as interfaces, union types and generics.</p>
-<p>It aims to fill a niche similar to that of TypeScript in the JavaScript world,
-but adhering to Lua’s spirit of minimalism, portability and embeddability.</p>
-<p>Is it implemented as a compiler, <a href="https://github.com/teal-language/tl">tl</a>,
-which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
+                        <h2 id="types-in-teal"><a class="header" href="#types-in-teal">Types in Teal</a></h2>
+<p>Teal is a dialect of Lua. This tutorial will assume you already know Lua, so
+we’ll focus on the things that Teal adds to Lua, and those are primarily type
+declarations.</p>
+<p>Types in Teal are more specific than in Lua, because Lua tables are so general.
+These are the basic types in Teal:</p>
+<ul>
+<li><code>any</code></li>
+<li><code>nil</code></li>
+<li><code>boolean</code></li>
+<li><code>integer</code></li>
+<li><code>number</code></li>
+<li><code>string</code></li>
+<li><code>thread</code> (coroutine)</li>
+</ul>
+<p>Note: An <code>integer</code> is a sub-type of number; it is of undefined precision,
+deferring to the Lua VM.</p>
+<p>You can also declare more types using type constructors. This is the summary
+list with a few examples of each; we’ll discuss them in more detail below:</p>
+<ul>
+<li>arrays - <code>{number}</code>, <code>{{number}}</code></li>
+<li>tuples - <code>{number, integer, string}</code></li>
+<li>maps - <code>{string:boolean}</code></li>
+<li>functions - <code>function(number, string): {number}, string</code></li>
+</ul>
+<p>Finally, there are types that must be declared and referred to using names:</p>
+<ul>
+<li>enums</li>
+<li>records</li>
+<li>interfaces</li>
+</ul>
+<p>Here is an example declaration of each. Again, we’ll go into more detail below,
+but this should give you an overview:</p>
+<pre><code class="language-lua">-- an enum: a set of accepted strings
+local enum State
+   "open"
+   "closed"
+end
+
+-- a record: a table with a known set of fields
+local record Point
+   x: number
+   y: number
+end
+
+-- an interface: an abstract record type
+local interface Character
+   sprite: Image
+   position: Point
+   kind: string
+end
+
+-- records can implement interfaces, using a type-identifying `where` clause
+local record Spaceship
+   is Character
+   where self.kind == "spaceship"
+
+   weapon: Weapons
+end
+
+-- a record can also declare an array interface, making it double as a record and an array
+local record TreeNode&lt;T&gt;
+   is {TreeNode&lt;T&gt;}
+
+   item: T
+end
+
+-- a userdata record: a record which is implemented as a userdata
+local record File
+   is userdata
+
+   status: function(): State
+   close: function(File): boolean, string
+end
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="your_first_teal_program.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
-                            <a rel="next prefetch" href="about.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="arrays.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -201,8 +268,11 @@ which compiles <code>.tl</code> source code into <code>.lua</code> files.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="your_first_teal_program.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
-                    <a rel="next prefetch" href="about.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="arrays.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
