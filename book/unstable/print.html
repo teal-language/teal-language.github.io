@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-9db149c2.js";
+            window.path_to_searchindex_js = "searchindex-94505421.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-fee1edea.js"></script>
@@ -1413,16 +1413,13 @@ end
 <pre><code class="language-lua">local macro make_local!(name: Expression, value: Expression)
    local decl = ```
       local $name = $value
+   ```
+   return decl
+end
 </code></pre>
-<p>return decl
-end</p>
-<pre><code>
-## Putting it all together, writing a pipe! macro
-
-Using all these tools given to us by the macro system, we can write a simple `pipe!` macro that takes in an expression like
-
-```lua
-x | f | g(y)
+<h2 id="putting-it-all-together-writing-a-pipe-macro"><a class="header" href="#putting-it-all-together-writing-a-pipe-macro">Putting it all together, writing a pipe! macro</a></h2>
+<p>Using all these tools given to us by the macro system, we can write a simple <code>pipe!</code> macro that takes in an expression like</p>
+<pre><code class="language-lua">x | f | g(y)
 </code></pre>
 <p>and produces</p>
 <pre><code class="language-lua">g(f(x), y)
@@ -2528,6 +2525,7 @@ precedence, see below.</p>
 *      ‘local’ ‘interface’ Name recordbody |
 *      ‘local’ ‘enum’ Name enumbody |
 *      ‘local’ ‘type’ Name ‘=’ newtype |
+*      ‘local’ ‘macroexp’ Name macroexpbody |
 *      ‘global’ attnamelist ‘:’ typelist [‘=’ explist] |
 *      ‘global’ attnamelist ‘=’ explist |
 *      ‘global’ ‘function’ Name funcbody |
@@ -2612,6 +2610,7 @@ precedence, see below.</p>
 
 *  recordentry ::= ‘userdata’ |
 *      ‘type’ Name ‘=’ newtype | [‘metamethod’] recordkey ‘:’ type |
+*      recordkey ‘:’ functiontype ‘=’ ‘macroexp’ macroexpbody |
 *      ‘record’ Name recordbody | ‘enum’ Name enumbody
 
 *  recordkey ::= Name | ‘[’ LiteralString ‘]’
@@ -2627,6 +2626,9 @@ precedence, see below.</p>
 *  parnamelist ::= parname {‘,’ parname}
 
 *  parname ::= Name [‘?’] [‘:’ type]
+
+*  macroexpbody ::= [typeargs] ‘(’ [parlist] ‘)’ [‘:’ retlist] retstat ‘end’
+
 </code></pre>
 <h2 id="operator-precedence"><a class="header" href="#operator-precedence">Operator precedence</a></h2>
 <p>Operator precedence in Teal follows the table below, from lower to higher priority:</p>
