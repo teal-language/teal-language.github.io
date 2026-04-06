@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-ae3d3cc3.js";
+            window.path_to_searchindex_js = "searchindex-2e36476e.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-fee1edea.js"></script>
@@ -2329,6 +2329,7 @@ not work.</p>
 <tr><td><code>--wdisable</code></td><td><code>disable_warnings</code></td><td><code>{string}</code></td><td><code>check</code> <code>run</code></td><td>Disable the given warnings.</td></tr>
 <tr><td><code>--werror</code></td><td><code>warning_error</code></td><td><code>{string}</code></td><td><code>check</code> <code>run</code></td><td>Promote the given warnings to errors.</td></tr>
 <tr><td><code>--global-env-def</code></td><td><code>global_env_def</code></td><td><code>string</code></td><td><code>check</code> <code>gen</code> <code>run</code></td><td>Specify a definition module declaring any custom globals predefined in your Lua environment. See the <a href="#global-environment-definition">declaration files</a> page for details.</td></tr>
+<tr><td><code>--no-stdlib</code></td><td><code>no_stdlib</code></td><td><code>boolean</code></td><td><code>check</code> <code>gen</code> <code>run</code></td><td>Don’t include the standard library definitions in the type checker. This is useful when using a custom environment that differs from the PUC-Rio Lua standard library.</td></tr>
 </tbody>
 </table>
 </div>
