@@ -16,8 +16,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-2459343d.css">
-        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-2e36476e.js";
+            window.path_to_searchindex_js = "searchindex-ae09ec3a.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-fee1edea.js"></script>
+        <script src="toc-2cecca87.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -2160,6 +2160,95 @@ local invalid5: MyEnum | AnotherEnum
 </code></pre>
 <p>This restriction on enums may be removed in the future.</p>
 <div style="break-before: page; page-break-before: always;"></div>
+<h1 id="the-teal-api"><a class="header" href="#the-teal-api">The Teal API</a></h1>
+<p>If you have Lua application, you can load the Teal compiler API and use it to convert
+Teal source code into Lua source code on the fly. This is useful, for example, for
+adding Teal support to a Lua-based plugin system.</p>
+<h2 id="before-we-begin-getting-the-api"><a class="header" href="#before-we-begin-getting-the-api">Before we begin: getting the API</a></h2>
+<p>Before we <code>require</code> any code, let’s consider how to integrate the Teal compiler
+in your application. As it is typical in the Lua ecosystem, there are a few
+ways to do it.</p>
+<h3 id="an-application-which-embeds-lua-sources"><a class="header" href="#an-application-which-embeds-lua-sources">An application which embeds Lua sources</a></h3>
+<p>If you have an application (let’s say, written in C, C++ or Rust), which embeds Lua
+sources, the simplest way to do it is to embed the amalgamated Teal
+sources, <code>tl.lua</code>, into your application’s Lua sources the same way you embed
+any other Lua modules. <code>tl.lua</code> is included in the Teal source distribution,
+and it is a single file which encapsulates all <code>teal.*</code> modules that comprise
+the Lua compiler.</p>
+<h3 id="using-the-teal-modules-directly"><a class="header" href="#using-the-teal-modules-directly">Using the <code>teal</code> modules directly</a></h3>
+<p>You might want to go this route if you are building a pure-Lua application,
+and you want to integrate dependencies using a package manager ecosystem such
+as LuaRocks or Lux. You can register a dependency on the <code>tl</code> package using
+your package manager of choice and require <code>teal</code> like you require any other
+module.</p>
+<h2 id="the-entry-point"><a class="header" href="#the-entry-point">The entry point</a></h2>
+<p>Now we can start by requiring the <code>teal</code> module, and getting a compiler instance:</p>
+<pre><code class="language-lua">local teal = require("teal")
+
+local compiler = teal.compiler()
+</code></pre>
+<p>We then need to give the compiler some input, which can be a filename, or some
+Teal code as a string. This will produce an input handle.</p>
+<p>To read from a file, you can use <code>open</code>:</p>
+<pre><code class="language-lua">-- Let's create a simple .tl file:
+local fd = io.open("my_file.tl", "w")
+fd:write("print('hello')")
+fd:close()
+
+-- We can load the file using the `open` method of the API:
+local handle1 = compiler:open("my_file.tl")
+
+-- We don't need the file anymore
+os.remove("my_file.tl")
+</code></pre>
+<p>To read from a string, use <code>input</code>. The optional second argument is
+a filename to be used in error messages.</p>
+<pre><code>-- We can read Teal code directly as a string using `input`:
+local handle2 = compiler:input([[
+   local x = 1
+   local y = "oh-oh"
+   print(x + y)
+]])
+</code></pre>
+<p>We can use those handles to request either one or all steps of the compilation
+pipeline to be performed. Here is an example generating code all at once:</p>
+<pre><code class="language-lua">local lua_code = handle1:gen()
+assert(type(lua_code) == "string")
+</code></pre>
+<p>And here we can see the use of the API generating it step by step, using
+the <code>handle2</code> example above, which contains a type error:</p>
+<pre><code class="language-lua">-- Lexing the tokens should be fine
+local tokens, lex_errs = handle2:lex()
+assert(type(tokens) == "table")
+assert(#lex_errs == 0)
+
+-- Parsing should be fine as well
+local ast, parse_errs = tokens:parse()
+assert(type(ast) == "table")
+assert(parse_errs == nil)
+
+-- Checking should catch the type error from our example!
+local module, check_errs = ast:check()
+assert(type(module) == "table")
+assert(#check_errs.type_errors == 1)
+</code></pre>
+<p>Of course, if the code contains no errors, you can also call <code>gen</code>
+and generate the Lua output. Both methods will produce the same result:</p>
+<pre><code>local handle3 = compiler:input([[
+   local x: integer = 1
+   local y: integer = 2
+   print(x + y)
+]])
+
+-- Showcasing all steps
+local lua_code = handle3:lex():parse():check():gen()
+assert(lua_code == "local x = 1\nlocal y = 2\nprint(x + y)")
+
+-- Or going straight to gen
+local lua_code2 = handle3:gen()
+assert(lua_code == lua_code2)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="using-tl-with-lua-1"><a href="#using-tl-with-lua-1" class="header">Using tl with Lua</a></h1>
 <h2 id="using-tl-with-lua"><a class="header" href="#using-tl-with-lua">Using tl with Lua</a></h2>
 <p>You can use tl to type-check not only Teal programs, but Lua programs too! When
@@ -2671,11 +2760,11 @@ associative. All other binary operators are left associative.</p>
 
         <script src="elasticlunr-ef4e11c1.min.js"></script>
         <script src="mark-09e88c2c.min.js"></script>
-        <script src="searcher-c2a407aa.js"></script>
+        <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-a0b12cfe.js"></script>
+        <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
 
