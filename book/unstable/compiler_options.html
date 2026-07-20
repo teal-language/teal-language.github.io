@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0b7d3cb3.js";
+            window.path_to_searchindex_js = "searchindex-8bf21079.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-2cecca87.js"></script>
@@ -195,6 +195,7 @@
 <tbody>
 <tr><td><code>-l --require</code></td><td></td><td><code>{string}</code></td><td><code>run</code></td><td>Require a module prior to executing the script. This is similar in behavior to the <code>-l</code> flag in the Lua interpreter.</td></tr>
 <tr><td><code>-I --include-dir</code></td><td><code>include_dir</code></td><td><code>{string}</code></td><td><code>check</code> <code>gen</code> <code>run</code></td><td>Prepend this directory to the module search path.</td></tr>
+<tr><td></td><td><code>source_dir</code></td><td><code>string</code></td><td><code>check</code> <code>gen</code> <code>run</code></td><td>Set the project source directory and add it to the module search path.</td></tr>
 <tr><td><code>--gen-compat</code></td><td><code>gen_compat</code></td><td><code>string</code></td><td><code>gen</code> <code>run</code></td><td>Generate compatibility code for targeting different Lua VM versions. See <a href="#generated-code">below</a> for details.</td></tr>
 <tr><td><code>--gen-target</code></td><td><code>gen_target</code></td><td><code>string</code></td><td><code>gen</code> <code>run</code></td><td>Minimum targeted Lua version for generated code. Options are <code>5.1</code>, <code>5.3</code> and <code>5.4</code>. See <a href="#generated-code">below</a> for details.</td></tr>
 <tr><td><code>--keep-hashbang</code></td><td></td><td></td><td><code>gen</code></td><td>Preserve hashbang line (<code>#!</code>) at the top of file if present.</td></tr>
@@ -206,6 +207,10 @@
 </tbody>
 </table>
 </div>
+<p>When <code>source_dir</code> is set in <code>tlconfig.lua</code>, Teal also uses it when resolving
+required modules. This lets a project keep its modules under a source directory
+such as <code>src</code> without repeating that directory in <code>include_dir</code>; any explicit
+<code>include_dir</code> entries are preserved.</p>
 <h3 id="generated-code"><a class="header" href="#generated-code">Generated code</a></h3>
 <p>Teal is a Lua dialect that most closely resembles Lua 5.3-5.4, but it is able
 to target Lua 5.1 (including LuaJIT) and Lua 5.2 as well. The compiler attempts
