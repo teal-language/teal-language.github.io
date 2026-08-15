@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-8bf21079.js";
+            window.path_to_searchindex_js = "searchindex-7716b032.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-2cecca87.js"></script>
@@ -250,6 +250,8 @@ will output code that uses 5.3 extensions.</p>
 generating 5.3-compatible code. If you install <code>tl</code> using LuaRocks, the CLI
 will use the Lua version you use with LuaRocks, so it will default to that
 Lua’s version.</p>
+<p>The <code>tl run</code> command loads the code it generates into the Lua VM it is running
+on, so unless you set <code>--gen-target</code> it targets that exact version.</p>
 <p>If you require the <code>tl</code> Lua module and use the <code>tl.loader()</code>, it will do the
 implicit version selection, picking the right choice based on the Lua version
 you’re running it on.</p>
