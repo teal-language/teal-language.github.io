@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-7716b032.js";
+            window.path_to_searchindex_js = "searchindex-4fb43b75.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-2cecca87.js"></script>
@@ -180,17 +180,17 @@ from Lua 5.4. They are:</p>
 <h3 id="const-variables"><a class="header" href="#const-variables">Const variables</a></h3>
 <p>The <code>&lt;const&gt;</code> annotation works in Teal like it does in Lua 5.4 (it works at
 compile time, even if you’re running a different version of Lua). Do note
-however that this is annotation for variables, and not values: the contents of a
-value set to a const variable are not constant.</p>
+however that, just like in Lua, this is annotation for variables, and not values:
+the contents of a value set to a const variable are not constant.</p>
 <pre><code class="language-lua">local xs &lt;const&gt; = {1,2,3}
 xs[1] = 999 -- ok! the array is not frozen
 xs = {} -- Error! can't replace the array in variable xs
 </code></pre>
 <h3 id="to-be-closed-variables"><a class="header" href="#to-be-closed-variables">To-be-closed variables</a></h3>
-<p>The <code>&lt;close&gt;</code> annotation from Lua 5.4 is only supported in Teal if your code
-generation target is Lua 5.4 (see the <a href="compiler_options.html">compiler options</a>
+<p>The <code>&lt;close&gt;</code> annotation introduced in Lua 5.4 is only supported in Teal if your code
+generation target is Lua 5.4 or greater (see the <a href="compiler_options.html">compiler options</a>
 documentation for details on code generation targets). These work just
-<a href="https://www.lua.org/manual/5.4/manual.html#3.3.8">like they do in Lua 5.4</a>.</p>
+<a href="https://www.lua.org/manual/5.4/manual.html#3.3.8">like they do in Lua 5.4+</a>.</p>
 <pre><code class="language-lua">local contents = {}
 for _, name in ipairs(filenames) do
    local f &lt;close&gt; = assert(io.open(name, "r"))

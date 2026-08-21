@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-7716b032.js";
+            window.path_to_searchindex_js = "searchindex-4fb43b75.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-2cecca87.js"></script>
@@ -204,7 +204,7 @@ type. Again, this is an attribute of the argument position, not of the
 argument type itself.</p>
 <p>You can declare functions that generate iterators which can be used in
 <code>for</code> statements: the function needs to produce another function that iterates.
-This is an example <a href="https://www.lua.org/pil/7.1.html">taken the book “Programming in Lua”</a>:</p>
+This is an example <a href="https://www.lua.org/pil/7.1.html">taken from the book “Programming in Lua”</a>:</p>
 <pre><code class="language-lua">local function allwords(): (function(): string)
    local line = io.read()
    local pos = 1
@@ -291,6 +291,12 @@ argument of the function:</p>
 end
 
 test(1, 2, 3)
+</code></pre>
+<p>Named vararg tables, as introduced in <a href="https://www.lua.org/manual/5.5/manual.html#3.4.11">Lua 5.5</a>,
+are supported by Teal:</p>
+<pre><code class="language-lua">local function test(...args: boolean): integer, boolean
+   return args.n, args[1]
+end
 </code></pre>
 <p>In case your function returns a variable amount of values, you may also declare
 variadic return types by using the <code>type...</code> syntax:</p>

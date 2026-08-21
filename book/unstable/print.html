@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-7716b032.js";
+            window.path_to_searchindex_js = "searchindex-4fb43b75.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-2cecca87.js"></script>
@@ -454,7 +454,7 @@ local x = p1[my_number] -- =&gt; x is a string | number union
 if x is string then
    print("Name is " .. x .. "!")
 else
-   print("Age is " .. x)
+   print("Age is " .. x * 12 .. " months.")
 end
 </code></pre>
 <p>Tuples will additionally help you keep track of accidentally adding more
@@ -838,7 +838,7 @@ type. Again, this is an attribute of the argument position, not of the
 argument type itself.</p>
 <p>You can declare functions that generate iterators which can be used in
 <code>for</code> statements: the function needs to produce another function that iterates.
-This is an example <a href="https://www.lua.org/pil/7.1.html">taken the book “Programming in Lua”</a>:</p>
+This is an example <a href="https://www.lua.org/pil/7.1.html">taken from the book “Programming in Lua”</a>:</p>
 <pre><code class="language-lua">local function allwords(): (function(): string)
    local line = io.read()
    local pos = 1
@@ -925,6 +925,12 @@ argument of the function:</p>
 end
 
 test(1, 2, 3)
+</code></pre>
+<p>Named vararg tables, as introduced in <a href="https://www.lua.org/manual/5.5/manual.html#3.4.11">Lua 5.5</a>,
+are supported by Teal:</p>
+<pre><code class="language-lua">local function test(...args: boolean): integer, boolean
+   return args.n, args[1]
+end
 </code></pre>
 <p>In case your function returns a variable amount of values, you may also declare
 variadic return types by using the <code>type...</code> syntax:</p>
@@ -1104,17 +1110,17 @@ from Lua 5.4. They are:</p>
 <h3 id="const-variables"><a class="header" href="#const-variables">Const variables</a></h3>
 <p>The <code>&lt;const&gt;</code> annotation works in Teal like it does in Lua 5.4 (it works at
 compile time, even if you’re running a different version of Lua). Do note
-however that this is annotation for variables, and not values: the contents of a
-value set to a const variable are not constant.</p>
+however that, just like in Lua, this is annotation for variables, and not values:
+the contents of a value set to a const variable are not constant.</p>
 <pre><code class="language-lua">local xs &lt;const&gt; = {1,2,3}
 xs[1] = 999 -- ok! the array is not frozen
 xs = {} -- Error! can't replace the array in variable xs
 </code></pre>
 <h3 id="to-be-closed-variables"><a class="header" href="#to-be-closed-variables">To-be-closed variables</a></h3>
-<p>The <code>&lt;close&gt;</code> annotation from Lua 5.4 is only supported in Teal if your code
-generation target is Lua 5.4 (see the <a href="#compiler-options">compiler options</a>
+<p>The <code>&lt;close&gt;</code> annotation introduced in Lua 5.4 is only supported in Teal if your code
+generation target is Lua 5.4 or greater (see the <a href="#compiler-options">compiler options</a>
 documentation for details on code generation targets). These work just
-<a href="https://www.lua.org/manual/5.4/manual.html#3.3.8">like they do in Lua 5.4</a>.</p>
+<a href="https://www.lua.org/manual/5.4/manual.html#3.3.8">like they do in Lua 5.4+</a>.</p>
 <pre><code class="language-lua">local contents = {}
 for _, name in ipairs(filenames) do
    local f &lt;close&gt; = assert(io.open(name, "r"))
@@ -2413,7 +2419,7 @@ not work.</p>
 <tr><td><code>-I --include-dir</code></td><td><code>include_dir</code></td><td><code>{string}</code></td><td><code>check</code> <code>gen</code> <code>run</code></td><td>Prepend this directory to the module search path.</td></tr>
 <tr><td></td><td><code>source_dir</code></td><td><code>string</code></td><td><code>check</code> <code>gen</code> <code>run</code></td><td>Set the project source directory and add it to the module search path.</td></tr>
 <tr><td><code>--gen-compat</code></td><td><code>gen_compat</code></td><td><code>string</code></td><td><code>gen</code> <code>run</code></td><td>Generate compatibility code for targeting different Lua VM versions. See <a href="#generated-code">below</a> for details.</td></tr>
-<tr><td><code>--gen-target</code></td><td><code>gen_target</code></td><td><code>string</code></td><td><code>gen</code> <code>run</code></td><td>Minimum targeted Lua version for generated code. Options are <code>5.1</code>, <code>5.3</code> and <code>5.4</code>. See <a href="#generated-code">below</a> for details.</td></tr>
+<tr><td><code>--gen-target</code></td><td><code>gen_target</code></td><td><code>string</code></td><td><code>gen</code> <code>run</code></td><td>Minimum targeted Lua version for generated code. Options are <code>5.1</code>, <code>5.3</code>, <code>5.4</code> and <code>5.5</code>. See <a href="#generated-code">below</a> for details.</td></tr>
 <tr><td><code>--keep-hashbang</code></td><td></td><td></td><td><code>gen</code></td><td>Preserve hashbang line (<code>#!</code>) at the top of file if present.</td></tr>
 <tr><td><code>-p --pretend</code></td><td></td><td></td><td><code>gen</code></td><td>Don’t compile/write to any files, but type check and log what files would be written to.</td></tr>
 <tr><td><code>--wdisable</code></td><td><code>disable_warnings</code></td><td><code>{string}</code></td><td><code>check</code> <code>run</code></td><td>Disable the given warnings.</td></tr>
@@ -2428,7 +2434,7 @@ required modules. This lets a project keep its modules under a source directory
 such as <code>src</code> without repeating that directory in <code>include_dir</code>; any explicit
 <code>include_dir</code> entries are preserved.</p>
 <h3 id="generated-code"><a class="header" href="#generated-code">Generated code</a></h3>
-<p>Teal is a Lua dialect that most closely resembles Lua 5.3-5.4, but it is able
+<p>Teal is a Lua dialect that most closely resembles Lua 5.3–5.5, but it is able
 to target Lua 5.1 (including LuaJIT) and Lua 5.2 as well. The compiler attempts
 to produce code that, given an input <code>.tl</code> file, generates the same behavior
 on various Lua versions.</p>
@@ -2443,7 +2449,7 @@ choose what is the minimum Lua version you want to target. Valid options are
 a compatibility forward declaration for <code>table.unpack</code> and will use the <code>bit32</code>
 library for bitwise operators.</p>
 <p>Using <code>5.3</code>, Teal will generate code using the native <code>//</code> and bitwise operators.</p>
-<p>The option <code>5.4</code> is equivalent to <code>5.3</code>, but it also allows using the <code>&lt;close&gt;</code>
+<p>The options <code>5.4</code> and <code>5.5</code> are equivalent to <code>5.3</code>, but also allow using the <code>&lt;close&gt;</code>
 variable annotation. Since that is incompatible with other Lua versions, using
 this option requires using <code>--gen-compat=off</code>.</p>
 <p>Code generated with <code>--gen-target=5.1</code> will still run on Lua 5.3+, but not
@@ -2455,7 +2461,7 @@ target implicitly.</p>
 <h4 id="which-lua-version-does-the-teal-compiler-target-by-default"><a class="header" href="#which-lua-version-does-the-teal-compiler-target-by-default">Which Lua version does the Teal compiler target by default?</a></h4>
 <p>If set explicitly via the <code>--gen-target</code> flag of the <code>tl</code> CLI (or the equivalent
 options in the programmatic API), the generated code will target the Lua
-version requested: 5.1, 5.3 or 5.4.</p>
+version requested: 5.1, 5.3, 5.4 or 5.5.</p>
 <p>If the code generation target is not set explicitly via <code>--gen-target</code>, Teal
 will target the Lua version most compatible with the version of the Lua VM
 under which the compiler itself is running. For example, if running under
